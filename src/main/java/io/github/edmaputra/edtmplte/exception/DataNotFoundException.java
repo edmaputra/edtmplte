@@ -1,10 +1,7 @@
 package io.github.edmaputra.edtmplte.exception;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 
 /**
  * Data Not Found Exception, with {@link HttpStatus} NOT_FOUND response
