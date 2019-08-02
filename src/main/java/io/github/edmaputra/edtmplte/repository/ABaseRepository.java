@@ -8,8 +8,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Base Repository interface that use {@link NoRepositoryBean} annotation to prevent generate it as a bean.
- * @since 1.0
+ *
  * @author edmaputra
+ * @since 1.0
  */
 @NoRepositoryBean
 public interface ABaseRepository<T extends ABaseEntity, ID> extends PagingAndSortingRepository<T, ID> {

@@ -1,6 +1,7 @@
 package io.github.edmaputra.edtmplte.service.impl;
 
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
+import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.springframework.beans.BeanUtils;
