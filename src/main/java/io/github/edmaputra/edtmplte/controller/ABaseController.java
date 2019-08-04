@@ -1,7 +1,7 @@
 package io.github.edmaputra.edtmplte.controller;
 
-import io.edmaputra.edtmpl.exception.DataEmptyException;
-import io.edmaputra.edtmpl.service.ABaseService;
+import io.github.edmaputra.edtmplte.exception.DataEmptyException;
+import io.github.edmaputra.edtmplte.service.ABaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +31,7 @@ public abstract class ABaseController<T extends Serializable, ID> {
         Iterable<T> data = service.retrieveAll(page, size);
         if (!data.iterator().hasNext()){
             log.info("data empty");
-            throw new DataEmptyException("Empty");
+            throw new DataEmptyException("Record Empty");
         }
         log.info("Retrieved {}", data);
         return new ResponseEntity(data, HttpStatus.OK);

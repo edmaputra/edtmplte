@@ -4,23 +4,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Data Not Found Exception, with {@link HttpStatus} NOT_FOUND response
+ * Data Empty Exception, with {@link HttpStatus} NOT_FOUND response
  *
  * @author edmaputra
  * @since 1.0
  */
-@ResponseStatus(
-        value = HttpStatus.NOT_FOUND,
-        reason = "Data Not Found"
-)
-public class DataNotFoundException extends Exception {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class DataEmptyException extends Exception {
 
     /**
      * Default Constructor
      *
      * @since 1.0
      */
-    public DataNotFoundException() {
+    public DataEmptyException() {
+        super();
     }
 
     /**
@@ -29,7 +27,7 @@ public class DataNotFoundException extends Exception {
      * @param message
      * @since 1.0
      */
-    public DataNotFoundException(String message) {
-        super(message);
+    public DataEmptyException(String s) {
+        super(s);
     }
 }
