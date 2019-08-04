@@ -6,6 +6,7 @@ import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -29,8 +30,8 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size) throws Exception {
         PageRequest request = PageRequest.of(page -1, size);
-        Iterable<T> collections = repository.findByRecordedTrue(request);
-        return collections;
+        Optional<Page<T>> collections = repository.findByRecordedTrue(request);
+        return collections.get();
     }
 
     @Override

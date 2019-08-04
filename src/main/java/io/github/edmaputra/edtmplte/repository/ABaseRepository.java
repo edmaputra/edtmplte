@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Optional;
+
 /**
  * Base Repository interface that use {@link NoRepositoryBean} annotation to prevent generate it as a bean.
  *
@@ -16,12 +18,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ABaseRepository<T extends ABaseEntity, ID> extends PagingAndSortingRepository<T, ID> {
 
     /**
-     * Returns a {@link Page} of entities with paging restriction provided in the {@code Pageable} object
+     * Returns a {@link java.util.Optional} of entities with paging restriction provided in the {@code Pageable} object
      * with recorded field as TRUE
      *
      * @param pageable
      * @return a page of entities
      */
-    Page<T> findByRecordedTrue(Pageable pageable);
+    Optional<Page<T>> findByRecordedTrue(Pageable pageable);
 
 }
