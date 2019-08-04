@@ -26,19 +26,19 @@ public abstract class ABaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 10)
-	protected String version;
+	protected String version = "1";
 
 	@CreationTimestamp
-	protected Date createdOn;
+	protected Date createdOn = new Date();
 
 	@Column(name = "creator", length = 70)
-	protected String creator;
+	protected String creator = "sys";
 
 	@UpdateTimestamp
-	protected Date updatedOn;
+	protected Date updatedOn = new Date();
 
 	@Column(name = "updater", length = 70)
-	protected String updater;
+	protected String updater = "sys";
 
 	protected boolean recorded = true;
 
