@@ -51,7 +51,7 @@ public interface ABaseService<T extends Serializable, ID> {
      * @return the entity with the given id or {@literal Optional#empty()} if none found
      * @since 1.0
      */
-    Optional<T> retrieveOne(ID id) throws Exception;
+    T retrieveOne(ID id) throws Exception;
 
     /**
      * Saves an entity, and then return {@link Optional} of the entity for further usability
@@ -60,7 +60,7 @@ public interface ABaseService<T extends Serializable, ID> {
      * @return the saved entity will never be {@literal null}.
      * @since 1.0
      */
-    Optional<T> add(T t) throws Exception;
+    T add(T t) throws Exception;
 
     /**
      * Update an entity, and then return {@link Optional} of the entity for further usability
@@ -70,7 +70,7 @@ public interface ABaseService<T extends Serializable, ID> {
      * @return the saved entity will never be {@literal null}.
      * @since 1.0
      */
-    Optional<T> update(T t, ID id) throws Exception;
+    T update(T t, ID id) throws Exception;
 
     /**
      * Update an entity to be deleted but data is still exist.
@@ -80,6 +80,6 @@ public interface ABaseService<T extends Serializable, ID> {
      * @return the saved entity will never be {@literal null}.
      * @since 1.0
      */
-    Optional<T> delete(ID id) throws Exception;
+    T delete(ID id) throws Exception;
 
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.Optional;
 
 @Slf4j
 public abstract class ABaseController<T extends Serializable, ID> {
@@ -23,7 +22,7 @@ public abstract class ABaseController<T extends Serializable, ID> {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+    public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                          @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
                                          Principal principal
     ) throws Exception {
@@ -34,37 +33,30 @@ public abstract class ABaseController<T extends Serializable, ID> {
             throw new DataEmptyException("Record Empty");
         }
         log.info("Retrieved {}", data);
-        return new ResponseEntity(data, HttpStatus.OK);
-
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> find(@PathVariable ID id) throws Exception {
-
-        Optional<T> t = service.retrieveOne(id);
-
-        if (!t.isPresent()) {
-            throw new Exception("id - " + id);
-        }
-
-        return new ResponseEntity<>(t.get(), HttpStatus.OK);
+    public ResponseEntity find(@PathVariable ID id) throws Exception {
+        T t = service.retrieveOne(id);
+        return ResponseEntity.ok().body(t);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> add(@Valid @RequestBody T t) throws Exception {
-        Optional<T> result = service.add(t);
-        return new ResponseEntity<>(result.get(), HttpStatus.CREATED);
+    public ResponseEntity add(@Valid @RequestBody T t) throws Exception {
+        T result = service.add(t);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<T> update(@Valid @RequestBody T t, @PathVariable("id") ID id) throws Exception {
-        Optional<T> result = service.update(t, id);
-        return new ResponseEntity<>(result.get(), HttpStatus.OK);
+        T result = service.update(t, id);
+        return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> deleteById(@PathVariable ID id) throws Exception {
-        Optional<T> result = service.delete(id);
-        return new ResponseEntity<>(result.get(), HttpStatus.OK);
+    public ResponseEntity deleteById(@PathVariable ID id) throws Exception {
+        T result = service.delete(id);
+        return ResponseEntity.ok().body(result);
     }
 }
