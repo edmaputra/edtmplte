@@ -29,14 +29,14 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
 
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size) throws Exception {
-        PageRequest request = PageRequest.of(page -1, size);
+        PageRequest request = PageRequest.of(page - 1, size);
         Optional<Page<T>> collections = repository.findByRecordedTrue(request);
         return collections.get();
     }
 
     @Override
-    public Iterable<T> retrieveAll(Integer page, Integer size,  String sortBy, String search) throws Exception {
-        PageRequest request = PageRequest.of(page -1, size, Sort.Direction.ASC, sortBy);
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
+        PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(request);
         return collections;
     }
