@@ -14,9 +14,9 @@ import java.util.Date;
  * Entity Abstract Class as domain for database transaction
  * it's implements {@link Serializable}
  * and use Lombok's {@link Data} and {@link NoArgsConstructor} for reduce boilerplate code.
+ *
  * @author edmaputra
- * @since 1.0-SNAPSHOT
- * @version 0.0.1
+ * @since 1.0
  */
 @Data
 @MappedSuperclass
