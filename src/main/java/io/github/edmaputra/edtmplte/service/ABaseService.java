@@ -25,9 +25,9 @@ public interface ABaseService<T extends Serializable, ID> {
     /**
      * Retrieves all entities by some parameter for limiter
      *
-     * @param page for number of the page
-     * @param size for how many data to displayed
-     * @return
+     * @param page number of the page
+     * @param size how many data to displayed
+     * @return {@link Iterable}
      * @since 1.0
      */
     Iterable<T> retrieveAll(Integer page, Integer size) throws Exception;
@@ -35,11 +35,11 @@ public interface ABaseService<T extends Serializable, ID> {
     /**
      * Retrieves all entities by some parameter for limiter
      *
-     * @param page   for number of the page
-     * @param size   for how many data to displayed
-     * @param sort   for type of sort in {@link String}
+     * @param page   number of the page
+     * @param size   how many data to displayed
+     * @param sort   type of sort in {@link String}
      * @param search if user want to filter with value
-     * @return
+     * @return {@link Iterable}
      * @since 1.0
      */
     Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception;
