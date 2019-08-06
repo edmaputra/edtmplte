@@ -77,7 +77,7 @@ public interface ABaseService<T extends Serializable, ID> {
      * Return {@link Optional} of the entity for further usability
      *
      * @param id must not be {@literal null}.
-     * @return the saved entity will never be {@literal null}.
+     * @return the deleted entity will never be {@literal null}.
      * @since 1.0
      */
     T delete(ID id) throws Exception;

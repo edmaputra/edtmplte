@@ -95,6 +95,13 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         return optional.get();
     }
 
+    /**
+     * Saves an entity, and then return the entity
+     *
+     * @param t must not be {@literal null}.
+     * @return the saved entity will never be {@literal null}.
+     * @since 1.0
+     */
     @Override
     public T add(T t) throws Exception {
         try {
@@ -105,6 +112,14 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         }
     }
 
+    /**
+     * Update an entity, and then the entity
+     *
+     * @param t  must not be {@literal null}.
+     * @param id must not be {@literal null}.
+     * @return the saved entity will never be {@literal null}.
+     * @since 1.0
+     */
     @Override
     public T update(T t, ID id) throws Exception {
         try {
@@ -121,6 +136,14 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         }
     }
 
+    /**
+     * Update an entity to be deleted but data is still exist.
+     * Return the entity
+     *
+     * @param id must not be {@literal null}.
+     * @return the deleted entity will never be {@literal null}.
+     * @since 1.0
+     */
     @Override
     public T delete(ID id) throws Exception {
         try {
