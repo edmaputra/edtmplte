@@ -76,6 +76,9 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(request);
+        if (!collections.iterator().hasNext()){
+            throw new DataEmptyException("Record is Empty");
+        }
         return collections;
     }
 
