@@ -135,7 +135,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
             T updated = repository.save(s);
             return updated;
         } catch (Exception ex) {
-            throw new Exception(this.getClass().getSimpleName() + ": Update Failed");
+            throw new Exception(this.getClass().getSimpleName() + ": Update Failed. " + ex.getMessage());
         }
     }
 

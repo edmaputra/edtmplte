@@ -28,10 +28,6 @@ public abstract class ABaseController<T extends Serializable, ID> {
     ) throws Exception {
         log.info("RetrieveAll");
         Iterable<T> data = service.retrieveAll(page, size);
-        if (!data.iterator().hasNext()){
-            log.info("data empty");
-            throw new DataEmptyException("Record Empty");
-        }
         log.info("Retrieved {}", data);
         return ResponseEntity.ok(data);
     }
