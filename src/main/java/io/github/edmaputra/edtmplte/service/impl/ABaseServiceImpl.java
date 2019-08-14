@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,7 +39,11 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public Iterable<T> retrieveAll() throws Exception {
-        return repository.findAll();
+        List list = repository.findAll();
+        if (list.isEmpty()) {
+            throw new DataEmptyException("Data Is Empty");
+        }
+        return list;
     }
 
     /**

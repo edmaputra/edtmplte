@@ -1,5 +1,6 @@
 package io.github.edmaputra.edtmplte.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 1.0
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
+@Slf4j
 public class DataEmptyException extends Exception {
 
     /**
@@ -29,5 +31,6 @@ public class DataEmptyException extends Exception {
      */
     public DataEmptyException(String s) {
         super(s);
+        log.info("Data Is Empty");
     }
 }
