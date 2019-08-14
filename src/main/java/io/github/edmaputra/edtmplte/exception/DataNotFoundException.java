@@ -43,7 +43,7 @@ public class DataNotFoundException extends Exception {
      * @param ABaseEntity
      * @since 1.0
      */
-    public DataNotFoundException(String s, ABaseEntity entity) {
+    public DataNotFoundException(String s, String entity) {
         super(s);
         log.warn("Data Is Empty: " + entity);
     }

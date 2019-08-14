@@ -42,7 +42,7 @@ public class DataEmptyException extends Exception {
      * @param ABaseEntity
      * @since 1.0
      */
-    public DataEmptyException(String s, ABaseEntity entity) {
+    public DataEmptyException(String s, String entity) {
         super(s);
         log.warn("Data Is Empty: " + entity);
     }
