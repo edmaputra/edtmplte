@@ -1,6 +1,5 @@
 package io.github.edmaputra.edtmplte.controller;
 
-import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.security.Principal;
 
 @Slf4j
@@ -52,5 +52,15 @@ public abstract class ABaseController<T extends Serializable, ID> {
     public ResponseEntity deleteById(@PathVariable ID id) throws Exception {
         T result = service.delete(id);
         return ResponseEntity.ok().body(result);
+    }
+
+    /**
+     * Method for get name of Generic Class
+     *
+     * @return Generic Class Name
+     */
+    protected String getGenericName() {
+        return ((Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]).getTypeName();
     }
 }

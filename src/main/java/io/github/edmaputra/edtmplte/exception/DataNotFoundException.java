@@ -1,5 +1,7 @@
 package io.github.edmaputra.edtmplte.exception;
 
+import io.github.edmaputra.edtmplte.domain.ABaseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
         value = HttpStatus.NOT_FOUND,
         reason = "Data Not Found"
 )
+@Slf4j
 public class DataNotFoundException extends Exception {
 
     /**
@@ -31,5 +34,17 @@ public class DataNotFoundException extends Exception {
      */
     public DataNotFoundException(String message) {
         super(message);
+    }
+
+    /**
+     * Exception Constructor with message and Entity object
+     *
+     * @param message
+     * @param ABaseEntity
+     * @since 1.0
+     */
+    public DataNotFoundException(String s, ABaseEntity entity) {
+        super(s);
+        log.warn("Data Is Empty: " + entity);
     }
 }
