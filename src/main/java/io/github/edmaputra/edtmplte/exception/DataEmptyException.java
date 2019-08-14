@@ -31,6 +31,6 @@ public class DataEmptyException extends Exception {
      */
     public DataEmptyException(String s) {
         super(s);
-        log.info("Data Is Empty");
+        log.warn("Data Is Empty");
     }
 }

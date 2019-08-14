@@ -26,9 +26,7 @@ public abstract class ABaseController<T extends Serializable, ID> {
                                          @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
                                          Principal principal
     ) throws Exception {
-        log.info("RetrieveAll");
         Iterable<T> data = service.retrieveAll(page, size);
-        log.info("Retrieved {}", data);
         return ResponseEntity.ok(data);
     }
 

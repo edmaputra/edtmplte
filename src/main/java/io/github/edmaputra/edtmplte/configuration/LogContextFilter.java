@@ -2,11 +2,13 @@ package io.github.edmaputra.edtmplte.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import java.io.IOException;
 import java.util.UUID;
 
+@Component
 @Slf4j
 public class LogContextFilter implements Filter {
 

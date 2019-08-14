@@ -5,13 +5,13 @@ import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +23,22 @@ import java.util.Optional;
  * @author edmaputra
  * @since 1.0
  */
+@Slf4j
 public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
 
+    /**
+     * Domain Class Name from Generic Class T
+     */
+    private final String domainClassName;
+
+    /**
+     * The Repository
+     */
     private ABaseRepository<T, ID> repository;
 
-    @Autowired
     public ABaseServiceImpl(ABaseRepository<T, ID> repository) {
         this.repository = repository;
+        this.domainClassName = getGenericName();
     }
 
     /**
@@ -56,6 +65,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size) throws Exception {
+        log.info(domainClassName + ": Retrieving All With Pages");
         PageRequest request = PageRequest.of(page - 1, size);
         Optional<Page<T>> collections = repository.findByRecordedTrue(request);
         if (!collections.isPresent()) {
@@ -64,6 +74,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         if (collections.get().isEmpty()) {
             throw new DataEmptyException("Data is Empty");
         }
+        log.info("Returning the result");
         return collections.get();
     }
 
@@ -81,7 +92,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(request);
-        if (!collections.iterator().hasNext()){
+        if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
         return collections;
@@ -89,7 +100,6 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
 
     /**
      * Retrieves an entity by its id.
-     *
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
@@ -164,6 +174,16 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
             System.out.println(ex.getMessage());
             throw new Exception(this.getClass().getSimpleName() + ": Delete By ID Failed");
         }
+    }
+
+    /**
+     * Method for get name of Generic Class
+     *
+     * @return Generic Class Name
+     */
+    protected String getGenericName() {
+        return ((Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]).getTypeName();
     }
 
 }
