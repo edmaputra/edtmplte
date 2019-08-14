@@ -1,6 +1,6 @@
 package io.github.edmaputra.edtmplte.exception;
 
-import io.github.edmaputra.edtmplte.domain.ABaseEntity;
+import io.github.edmaputra.edtmplte.logger.LogEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DataEmptyException extends Exception {
 
     /**
+     * Default Message for this Custom Exception
+     */
+    private static final String DEFAULT_MESSAGE = "Data is Empty";
+
+    /**
      * Default Constructor
      *
      * @since 1.0
@@ -25,25 +30,26 @@ public class DataEmptyException extends Exception {
     }
 
     /**
-     * Exception Constructor with message
+     * Exception Constructor with Entity Object
      *
      * @param message
      * @since 1.0
      */
-    public DataEmptyException(String s) {
-        super(s);
-        log.warn("Data Is Empty");
+    public DataEmptyException(String entity) {
+        super(DEFAULT_MESSAGE);
+        log.warn(new LogEntity(entity, DEFAULT_MESSAGE).toString());
+
     }
 
     /**
-     * Exception Constructor with message and Entity object
+     * Exception Constructor with Layer and Entity object
      *
      * @param message
      * @param ABaseEntity
      * @since 1.0
      */
-    public DataEmptyException(String s, String entity) {
-        super(s);
-        log.warn("Data Is Empty: " + entity);
+    public DataEmptyException(String layer, String entity) {
+        super(DEFAULT_MESSAGE);
+        log.warn(new LogEntity(layer, entity, DEFAULT_MESSAGE).toString());
     }
 }

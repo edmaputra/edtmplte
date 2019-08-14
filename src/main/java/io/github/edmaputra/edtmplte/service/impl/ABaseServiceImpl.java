@@ -3,6 +3,7 @@ package io.github.edmaputra.edtmplte.service.impl;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
+import io.github.edmaputra.edtmplte.logger.LogEntity;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      * Domain Class Name from Generic Class T
      */
     private final String domainClassName;
+    private final String layerName = this.getClass().getName();
 
     /**
      * The Repository
@@ -50,7 +52,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     public Iterable<T> retrieveAll() throws Exception {
         List list = repository.findAll();
         if (list.isEmpty()) {
-            throw new DataEmptyException("Data Is Empty");
+            throw new DataEmptyException(layerName, domainClassName);
         }
         return list;
     }
@@ -69,10 +71,10 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         PageRequest request = PageRequest.of(page - 1, size);
         Optional<Page<T>> collections = repository.findByRecordedTrue(request);
         if (!collections.isPresent()) {
-            throw new DataNotFoundException("Data Not Found");
+            throw new DataNotFoundException(layerName, domainClassName);
         }
         if (collections.get().isEmpty()) {
-            throw new DataEmptyException("Data is Empty");
+            throw new DataEmptyException(layerName, domainClassName);
         }
         log.info("Returning the result");
         return collections.get();
@@ -166,13 +168,17 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     public T delete(ID id) throws Exception {
         try {
             Optional<T> t = repository.findById(id);
+            if (!t.isPresent())
+                throw new DataNotFoundException("ID - " + id);
             T e = t.get();
+            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: "+id).toString());
             e.setRecorded(false);
+            log.info(new LogEntity(domainClassName, "Set Recorded to False for Entity with ID: "+id).toString());
             T saved = repository.save(e);
             return saved;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            throw new Exception(this.getClass().getSimpleName() + ": Delete By ID Failed");
+            log.warn(new LogEntity(layerName, domainClassName, "Delete By ID " + id + " Failed").toString());
+            throw new Exception("Delete By ID " + id + " Failed");
         }
     }
 
