@@ -6,7 +6,6 @@ import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +32,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
-    private static final Logger log = LoggerFactory.getLogger(ABaseService.class);
+    private static final Logger log = LoggerFactory.getLogger(ABaseServiceImpl.class);
 
 
     /**

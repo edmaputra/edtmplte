@@ -1,7 +1,8 @@
 package io.github.edmaputra.edtmplte.exception;
 
 import io.github.edmaputra.edtmplte.logger.LogEntity;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 1.0
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-@Slf4j
 public class DataNotFoundException extends Exception {
 
     /**
      * Default Message for this Custom Exception
      */
     private static final String DEFAULT_MESSAGE = "Data Not Found";
+    private static final Logger log = LoggerFactory.getLogger(DataNotFoundException.class);
 
     /**
      * Default Constructor

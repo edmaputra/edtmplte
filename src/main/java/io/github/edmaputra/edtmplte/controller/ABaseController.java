@@ -1,7 +1,6 @@
 package io.github.edmaputra.edtmplte.controller;
 
 import io.github.edmaputra.edtmplte.service.ABaseService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.security.Principal;
 
-@Slf4j
 public abstract class ABaseController<T extends Serializable, ID> {
 
     private ABaseService<T, ID> service;
