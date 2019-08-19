@@ -17,10 +17,7 @@ import java.io.Serializable;
  * @author edmaputra
  * @since 1.0
  */
-@Data
 @MappedSuperclass
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public abstract class ABaseIdEntity extends ABaseEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -29,4 +26,27 @@ public abstract class ABaseIdEntity extends ABaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
+	public ABaseIdEntity() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "ABaseIdEntity{" +
+				"id=" + id +
+				", version='" + version + '\'' +
+				", createdOn=" + createdOn +
+				", creator='" + creator + '\'' +
+				", updatedOn=" + updatedOn +
+				", updater='" + updater + '\'' +
+				", recorded=" + recorded +
+				'}';
+	}
 }

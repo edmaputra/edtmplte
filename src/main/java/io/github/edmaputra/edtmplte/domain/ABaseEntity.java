@@ -18,9 +18,7 @@ import java.util.Date;
  * @author edmaputra
  * @since 1.0
  */
-@Data
 @MappedSuperclass
-@NoArgsConstructor
 public abstract class ABaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,4 +40,66 @@ public abstract class ABaseEntity implements Serializable {
 
 	protected boolean recorded = true;
 
+	public ABaseEntity() {
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdater() {
+		return updater;
+	}
+
+	public void setUpdater(String updater) {
+		this.updater = updater;
+	}
+
+	public boolean isRecorded() {
+		return recorded;
+	}
+
+	public void setRecorded(boolean recorded) {
+		this.recorded = recorded;
+	}
+
+	@Override
+	public String toString() {
+		return "ABaseEntity{" +
+				"version='" + version + '\'' +
+				", createdOn=" + createdOn +
+				", creator='" + creator + '\'' +
+				", updatedOn=" + updatedOn +
+				", updater='" + updater + '\'' +
+				", recorded=" + recorded +
+				'}';
+	}
 }

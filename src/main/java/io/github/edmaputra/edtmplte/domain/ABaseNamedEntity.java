@@ -15,14 +15,35 @@ import javax.validation.constraints.NotBlank;
  * @author edmaputra
  * @since 1.0
  */
-@Data
 @MappedSuperclass
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public abstract class ABaseNamedEntity extends ABaseIdEntity{
 
     @NotBlank(message = "Name is Blank. Please Fill the Detail")
     @Column(name = "name", length = 70, nullable = false)
     private String name;
 
+    public ABaseNamedEntity() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "ABaseNamedEntity{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", version='" + version + '\'' +
+                ", createdOn=" + createdOn +
+                ", creator='" + creator + '\'' +
+                ", updatedOn=" + updatedOn +
+                ", updater='" + updater + '\'' +
+                ", recorded=" + recorded +
+                '}';
+    }
 }
