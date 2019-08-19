@@ -4,7 +4,7 @@
 
     <groupId>io.github.edmaputra</groupId>
     <artifactId>edtmplte</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <developers>
 		<developer>
@@ -32,7 +32,7 @@
         <connection>scm:git:git://github.com/edmaputra/edtmplte.git</connection>
         <developerConnection>scm:git:git@github.com:edmaputra/edtmplte.git</developerConnection>
         <url>https://github.com/edmaputra/edtmplte</url>
-        <tag>edtmplte-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
