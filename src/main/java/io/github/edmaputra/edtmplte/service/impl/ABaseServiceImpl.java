@@ -7,6 +7,8 @@ import io.github.edmaputra.edtmplte.logger.LogEntity;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,6 @@ import java.util.Optional;
  * @author edmaputra
  * @since 1.0
  */
-@Slf4j
 public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
 
     /**
@@ -32,6 +33,8 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
+    private static final Logger log = LoggerFactory.getLogger(ABaseService.class);
+
 
     /**
      * The Repository
