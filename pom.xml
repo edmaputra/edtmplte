@@ -6,6 +6,16 @@
     <artifactId>edtmplte</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
+    <name>edtmplte</name>
+    <description>Base Template for Spring Boot Application</description>
+    <url>https://github.com/edmaputra/edtmplte</url>
+
+    <organization>
+        <url>https://github.com/edmaputra</url>
+        <name>edtmplte</name>
+    </organization>
+    <inceptionYear>2019</inceptionYear>
+
     <developers>
 		<developer>
 			<name>Bangun Edma Saputra</name>
