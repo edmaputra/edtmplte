@@ -47,9 +47,9 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:git://github.com/edmaputra/edtmplte.git</connection>
-        <developerConnection>scm:git:git@github.com:edmaputra/edtmplte.git</developerConnection>
-        <url>https://github.com/edmaputra/edtmplte</url>
+        <connection>scm:git:git://github.com/edmaputra/OSSRH-50881.git</connection>
+        <developerConnection>scm:git:git@github.com:edmaputra/OSSRH-50881.git</developerConnection>
+        <url>https://github.com/edmaputra/OSSRH-50881</url>
         <tag>edtmplte-1.0.0</tag>
     </scm>
 
