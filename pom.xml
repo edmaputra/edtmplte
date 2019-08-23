@@ -4,7 +4,7 @@
 
     <groupId>io.github.edmaputra</groupId>
     <artifactId>edtmplte</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <name>edtmplte</name>
     <description>Base Template for Spring Boot Application</description>
@@ -50,7 +50,7 @@
         <connection>scm:git:git://github.com/edmaputra/OSSRH-50881.git</connection>
         <developerConnection>scm:git:git@github.com:edmaputra/OSSRH-50881.git</developerConnection>
         <url>https://github.com/edmaputra/OSSRH-50881</url>
-        <tag>edtmplte-1.0.0</tag>
+        <tag>edtmplte-1.0.1</tag>
     </scm>
 
     <properties>
