@@ -192,7 +192,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
             if (!t.isPresent())
                 throw new DataNotFoundException("ID - " + id);
             T e = t.get();
-            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: " + id ).toString());
+            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: " + id).toString());
             e.setRecorded(false);
             log.info(new LogEntity(domainClassName, "Set Recorded to False for Entity with ID: " + id).toString());
             T saved = repository.save(e);
