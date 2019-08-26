@@ -52,10 +52,12 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public Iterable<T> retrieveAll() throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving All").toString());
         List list = repository.findAll();
         if (list.isEmpty()) {
             throw new DataEmptyException(layerName, domainClassName);
         }
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return list;
     }
 
@@ -69,7 +71,8 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size) throws Exception {
-        log.info(domainClassName + ": Retrieving All With Pages");
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size).toString());
+
         PageRequest request = PageRequest.of(page - 1, size);
         Optional<Page<T>> collections = repository.findByRecordedTrue(request);
         if (!collections.isPresent()) {
@@ -78,7 +81,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         if (collections.get().isEmpty()) {
             throw new DataEmptyException(layerName, domainClassName);
         }
-        log.info("Returning the result");
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return collections.get();
     }
 
@@ -94,11 +97,14 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return collections;
     }
 
@@ -111,9 +117,11 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public T retrieveOne(ID id) throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving One with ID: " + id).toString());
         Optional<T> optional = repository.findById(id);
         if (!optional.isPresent())
             throw new DataNotFoundException("ID - " + id);
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return optional.get();
     }
 
@@ -126,10 +134,14 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public T add(T t) throws Exception {
+        log.info(new LogEntity(domainClassName, "Try to Save New Entity with Body: " + t).toString());
         try {
             T tt = repository.save(t);
+            log.info(new LogEntity(domainClassName, "Save Successful").toString());
+            log.info(new LogEntity(domainClassName, "Returning the Result").toString());
             return tt;
         } catch (Exception ex) {
+            log.warn(new LogEntity(domainClassName, "Save with Body: " + t.toString() + ", Failed").toString());
             throw new Exception(this.getClass().getSimpleName() + ": Add Failed");
         }
     }
@@ -144,16 +156,23 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      */
     @Override
     public T update(T t, ID id) throws Exception {
+        log.info(domainClassName + ": Try to Update Entity with Body: " + t.toString() + " by ID: " + id);
         try {
             Optional<T> saved = repository.findById(id);
             if (!saved.isPresent()) {
                 throw new DataNotFoundException("ID - " + id);
             }
+            log.info(new LogEntity(domainClassName, "Get Saved Entity").toString());
             T s = saved.get();
             BeanUtils.copyProperties(t, s, "id");
+            log.info(new LogEntity(domainClassName, "Copy new properties to the saved entity").toString());
             T updated = repository.save(s);
+            log.info(new LogEntity(domainClassName, "Update Successful").toString());
+            log.info(new LogEntity(domainClassName, "Returning the Result").toString());
+
             return updated;
         } catch (Exception ex) {
+            log.warn(new LogEntity(domainClassName, "Update with Body: " + t + " ,By Id: " + id + " Failed.").toString());
             throw new Exception(this.getClass().getSimpleName() + ": Update Failed. " + ex.getMessage());
         }
     }
@@ -173,9 +192,9 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
             if (!t.isPresent())
                 throw new DataNotFoundException("ID - " + id);
             T e = t.get();
-            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: "+id).toString());
+            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: " + id ).toString());
             e.setRecorded(false);
-            log.info(new LogEntity(domainClassName, "Set Recorded to False for Entity with ID: "+id).toString());
+            log.info(new LogEntity(domainClassName, "Set Recorded to False for Entity with ID: " + id).toString());
             T saved = repository.save(e);
             return saved;
         } catch (Exception ex) {
