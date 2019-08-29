@@ -21,7 +21,7 @@ public abstract class ABaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(length = 10)
+	@Column(length = 10, name = "version")
 	protected String version = "1";
 
 	@CreationTimestamp
@@ -38,6 +38,7 @@ public abstract class ABaseEntity implements Serializable {
 	@Column(name = "updater", length = 70)
 	protected String updater = "sys";
 
+	@Column(name = "recorded")
 	protected boolean recorded = true;
 
 	public ABaseEntity() {
