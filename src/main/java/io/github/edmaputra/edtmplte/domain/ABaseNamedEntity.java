@@ -3,6 +3,7 @@ package io.github.edmaputra.edtmplte.domain;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 /**
  * Entity Abstract Class which extending the {@link ABaseIdEntity}.
@@ -19,6 +20,20 @@ public abstract class ABaseNamedEntity extends ABaseIdEntity{
     private String name;
 
     public ABaseNamedEntity() {
+    }
+
+    public ABaseNamedEntity(@NotBlank(message = "Name is Blank. Please Fill the Detail") String name) {
+        this.name = name;
+    }
+
+    public ABaseNamedEntity(Long id, @NotBlank(message = "Name is Blank. Please Fill the Detail") String name) {
+        super(id);
+        this.name = name;
+    }
+
+    public ABaseNamedEntity(String version, Date createdOn, String creator, Date updatedOn, String updater, boolean recorded, Long id, @NotBlank(message = "Name is Blank. Please Fill the Detail") String name) {
+        super(version, createdOn, creator, updatedOn, updater, recorded, id);
+        this.name = name;
     }
 
     public String getName() {

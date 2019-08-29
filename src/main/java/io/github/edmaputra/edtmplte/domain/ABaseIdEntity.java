@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.Date;
 
 /**
  * Entity Abstract Class which extending the {@link ABaseEntity}.
@@ -22,6 +23,15 @@ public abstract class ABaseIdEntity extends ABaseEntity {
 	protected Long id;
 
 	public ABaseIdEntity() {
+	}
+
+	public ABaseIdEntity(Long id) {
+		this.id = id;
+	}
+
+	public ABaseIdEntity(String version, Date createdOn, String creator, Date updatedOn, String updater, boolean recorded, Long id) {
+		super(version, createdOn, creator, updatedOn, updater, recorded);
+		this.id = id;
 	}
 
 	public Long getId() {

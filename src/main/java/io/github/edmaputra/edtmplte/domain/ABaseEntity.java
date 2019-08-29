@@ -44,6 +44,15 @@ public abstract class ABaseEntity implements Serializable {
 	public ABaseEntity() {
 	}
 
+	public ABaseEntity(String version, Date createdOn, String creator, Date updatedOn, String updater, boolean recorded) {
+		this.version = version;
+		this.createdOn = createdOn;
+		this.creator = creator;
+		this.updatedOn = updatedOn;
+		this.updater = updater;
+		this.recorded = recorded;
+	}
+
 	public String getVersion() {
 		return version;
 	}
