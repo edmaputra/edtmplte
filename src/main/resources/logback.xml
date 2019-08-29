@@ -42,6 +42,10 @@
         <appender-ref ref="RollingFileInfo"/>
     </logger>
 
+    <logger name="io.github.edmaputra.edtmplte" additivity="false" level="warn">
+        <appender-ref ref="RollingFileInfo"/>
+    </logger>
+
     <logger name="io.github.edmaputra.edtmplte" additivity="false" level="debug">
         <appender-ref ref="RollingFileInfo"/>
     </logger>

@@ -25,12 +25,14 @@ public abstract class ABaseEntity implements Serializable {
 	protected String version = "1";
 
 	@CreationTimestamp
+	@Column(name = "created_on")
 	protected Date createdOn = new Date();
 
 	@Column(name = "creator", length = 70)
 	protected String creator = "sys";
 
 	@UpdateTimestamp
+	@Column(name = "updated_on")
 	protected Date updatedOn = new Date();
 
 	@Column(name = "updater", length = 70)
