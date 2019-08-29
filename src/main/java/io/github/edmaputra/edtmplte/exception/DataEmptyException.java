@@ -36,17 +36,17 @@ public class DataEmptyException extends Exception {
      * @param message
      * @since 1.0
      */
-    public DataEmptyException(String entity) {
+    public DataEmptyException(String message) {
         super(DEFAULT_MESSAGE);
-        log.warn(new LogEntity(entity, DEFAULT_MESSAGE).toString());
+        log.warn(new LogEntity(message, DEFAULT_MESSAGE).toString());
 
     }
 
     /**
      * Exception Constructor with Layer and Entity object
      *
-     * @param message
-     * @param ABaseEntity
+     * @param layer
+     * @param entity
      * @since 1.0
      */
     public DataEmptyException(String layer, String entity) {

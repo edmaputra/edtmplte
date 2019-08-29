@@ -35,16 +35,16 @@ public class DataNotFoundException extends Exception {
      * @param message
      * @since 1.0
      */
-    public DataNotFoundException(String entity) {
+    public DataNotFoundException(String message) {
         super(DEFAULT_MESSAGE);
-        log.warn(new LogEntity(entity, DEFAULT_MESSAGE).toString());
+        log.warn(new LogEntity(message, DEFAULT_MESSAGE).toString());
     }
 
     /**
      * Exception Constructor with Layer and Entity object
      *
-     * @param message
-     * @param ABaseEntity
+     * @param layer
+     * @param entity
      * @since 1.0
      */
     public DataNotFoundException(String layer, String entity) {

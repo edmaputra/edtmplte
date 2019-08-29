@@ -4,8 +4,8 @@
 
     <groupId>io.github.edmaputra</groupId>
     <artifactId>edtmplte</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>1.0.3-SNAPSHOT</version>
+<!--    <packaging>jar</packaging>-->
     <name>edtmplte</name>
     <description>Base Template for Spring Boot Application</description>
     <url>https://github.com/edmaputra/edtmplte</url>
