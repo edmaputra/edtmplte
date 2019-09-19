@@ -14,7 +14,7 @@
 
     <appender name="RollingFileInfo"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/spring-boot-logger.log</file>
+<!--        <file>${LOGS}/spring-boot-logger.log</file>-->
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -34,7 +34,7 @@
 
     <appender name="RollingFileWarn"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/spring-boot-logger.log</file>
+<!--        <file>${LOGS}/spring-boot-logger.log</file>-->
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -54,7 +54,7 @@
 
     <appender name="RollingFileDebug"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/spring-boot-logger.log</file>
+<!--        <file>${LOGS}/spring-boot-logger.log</file>-->
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -74,7 +74,7 @@
 
     <appender name="RollingFileError"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/spring-boot-logger.log</file>
+<!--        <file>${LOGS}/spring-boot-logger.log</file>-->
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
