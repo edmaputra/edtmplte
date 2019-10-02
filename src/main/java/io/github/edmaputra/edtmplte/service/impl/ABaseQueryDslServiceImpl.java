@@ -1,10 +1,11 @@
 package io.github.edmaputra.edtmplte.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
-import io.github.edmaputra.edtmplte.domain.QABaseNamedEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
+import io.github.edmaputra.edtmplte.repository.ABaseQueryDslRepository;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
@@ -19,31 +20,33 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class that implements {@link ABaseService} for Business Object Layer.
+ * Class that implements {@link ABaseService} for Business Object Layer with QueryDsl feature.
  *
  * @param <T>  the domain which extends {@link ABaseEntity}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
  * @since 1.0
  */
-public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
+public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
 
     /**
      * Domain Class Name from Generic Class T
      */
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
-    private static final Logger log = LoggerFactory.getLogger(ABaseServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslServiceImpl.class);
 
+    private final String entityQueryDsl;
 
     /**
      * The Repository
      */
-    private ABaseRepository<T, ID> repository;
+    private ABaseQueryDslRepository<T, ID> repository;
 
-    public ABaseServiceImpl(ABaseRepository<T, ID> repository) {
+    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository<T, ID> repository, String entity) {
         this.repository = repository;
         this.domainClassName = getGenericName();
+        this.entityQueryDsl = entity;
     }
 
     /**
@@ -99,9 +102,10 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+        Predicate predicate = new ABaseNamePredicateBuilder(entityQueryDsl).with("name", ":", search).build();
 
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(request);
+        Iterable<T> collections = repository.findAll(predicate, request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
