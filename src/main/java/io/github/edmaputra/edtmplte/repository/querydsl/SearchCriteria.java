@@ -1,4 +1,4 @@
-package io.github.edmaputra.edtmplte.service.impl;
+package io.github.edmaputra.edtmplte.repository.querydsl;
 
 public class SearchCriteria {
 

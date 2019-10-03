@@ -1,5 +1,7 @@
 package io.github.edmaputra.edtmplte.domain;
 
+import io.github.edmaputra.edtmplte.annotation.Filterable;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +19,7 @@ public abstract class ABaseNamedEntity extends ABaseIdEntity{
 
     @NotBlank(message = "Name is Blank. Please Fill the Detail")
     @Column(name = "name", length = 70, nullable = false)
+    @Filterable
     private String name;
 
     public ABaseNamedEntity() {

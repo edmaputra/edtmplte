@@ -1,5 +1,6 @@
 package io.github.edmaputra.edtmplte.domain;
 
+import io.github.edmaputra.edtmplte.annotation.Filterable;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,6 +23,7 @@ public abstract class ABaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 10, name = "version")
+	@Filterable
 	protected String version = "1";
 
 	@CreationTimestamp
