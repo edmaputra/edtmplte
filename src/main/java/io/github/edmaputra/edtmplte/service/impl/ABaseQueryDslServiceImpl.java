@@ -118,6 +118,11 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
         return collections;
     }
 
+    @Override
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception {
+        return null;
+    }
+
     /**
      * Retrieves an entity by its id.
      *

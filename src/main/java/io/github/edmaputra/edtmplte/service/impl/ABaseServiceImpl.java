@@ -91,7 +91,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      *
      * @param page   number of the page
      * @param size   how many data to displayed
-     * @param sort   type of sort in {@link String}
+     * @param sortBy   type of sort in {@link String}
      * @param search if user want to filter with value
      * @return {@link Iterable}
      * @since 1.0
@@ -104,6 +104,40 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         Iterable<T> collections = repository.findAll(request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
+        }
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
+        return collections;
+    }
+
+    /**
+     * Retrieves all entities by some parameter for limiter
+     *
+     * @param page   number of the page
+     * @param size   how many data to displayed
+     * @param sort   type of sort in {@link String}
+     * @param search if user want to filter with value
+     * @param option RECORDED for recorded is true, ALL for all saved data
+     * @return {@link Iterable}
+     * @since 1.0
+     */
+    @Override
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search + ", Option: " + option).toString());
+
+        PageRequest request = PageRequest.of(page - 1, size);
+        Page<T> collections = null;
+        if (option.equalsIgnoreCase("RECORDED")) {
+            Optional<Page<T>> temp = repository.findByRecordedTrue(request);
+            collections = temp.get();
+        } else if (option.equalsIgnoreCase("ALL")) {
+            collections = repository.findAll(request);
+        }
+
+        if (collections == null) {
+            throw new DataNotFoundException(layerName, domainClassName);
+        }
+        if (collections.isEmpty()) {
+            throw new DataEmptyException(layerName, domainClassName);
         }
         log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return collections;

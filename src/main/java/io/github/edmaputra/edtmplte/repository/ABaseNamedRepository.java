@@ -15,15 +15,12 @@ import java.util.Optional;
  * @since 1.0
  */
 @NoRepositoryBean
-public interface ABaseRepository<T extends ABaseEntity, ID> extends JpaRepository<T, ID> {
-
+public interface ABaseNamedRepository<T extends ABaseEntity, ID> extends ABaseRepository {
     /**
-     * Returns a {@link java.util.Optional} of entities with paging restriction provided in the {@code Pageable} object
-     * with recorded field as TRUE
+     * Returns a {@link Iterable} of entities, filter by name*
      *
-     * @param pageable
-     * @return a page of entities
+     * @param name
+     * @return iterable of entities
      */
-    Optional<Page<T>> findByRecordedTrue(Pageable pageable);
-
+    Iterable<T> findByName(String name);
 }

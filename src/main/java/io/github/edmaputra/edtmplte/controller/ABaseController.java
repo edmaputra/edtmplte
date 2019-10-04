@@ -64,7 +64,8 @@ public abstract class ABaseController<T extends Serializable, ID> {
     public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                       @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
                                       @RequestParam(name = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                      @RequestParam(name = "search", defaultValue = "", required = false) String search
+                                      @RequestParam(name = "search", defaultValue = "", required = false) String search,
+                                      @RequestParam(name = "option", defaultValue = "RECORDED", required = false) String option
 //                                      Principal principal
     ) throws Exception {
         Iterable<T> data = service.retrieveAll(page, size, sortBy, search);
