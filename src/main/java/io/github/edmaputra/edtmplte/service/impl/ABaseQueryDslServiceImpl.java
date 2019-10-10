@@ -2,12 +2,14 @@ package io.github.edmaputra.edtmplte.service.impl;
 
 import com.google.common.base.Strings;
 import com.querydsl.core.types.Predicate;
+import io.github.edmaputra.edtmplte.annotation.Filterable;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
-import io.github.edmaputra.edtmplte.repository.querydsl.ABaseNamePredicateBuilder;
 import io.github.edmaputra.edtmplte.repository.ABaseQueryDslRepository;
+import io.github.edmaputra.edtmplte.repository.querydsl.ABaseNamePredicateBuilder;
+import io.github.edmaputra.edtmplte.service.ABaseQueryDslService;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,28 +31,25 @@ import java.util.Optional;
  * @param <T>  the domain which extends {@link ABaseEntity}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.5
  */
-public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
+public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABaseQueryDslService<T, ID> {
 
-    /**
-     * Domain Class Name from Generic Class T
-     */
+    private final ABaseEntity clazz;
+
+    private final ABaseQueryDslRepository<T, ID> repository;
+
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
-    private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslServiceImpl.class);
-
     private final String entityQueryDsl;
 
-    /**
-     * The Repository
-     */
-    private ABaseQueryDslRepository<T, ID> repository;
+    private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslServiceImpl.class);
 
-    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository<T, ID> repository, String entity) {
+    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository repository, ABaseEntity t) {
         this.repository = repository;
+        this.clazz = t;
         this.domainClassName = getGenericName();
-        this.entityQueryDsl = entity;
+        this.entityQueryDsl = getEntityName();
     }
 
     /**
@@ -95,7 +97,7 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
      *
      * @param page   number of the page
      * @param size   how many data to displayed
-     * @param sortBy   type of sort in {@link String}
+     * @param sortBy type of sort in {@link String}
      * @param search if user want to filter with value
      * @return {@link Iterable}
      * @since 1.0
@@ -103,12 +105,20 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
-        ABaseNamePredicateBuilder builder =  new ABaseNamePredicateBuilder(entityQueryDsl);
-//        if (!Strings.isNullOrEmpty(search)) {
-//            predicate = predicate.with("name", ":", search).build();
-//        }
+        ABaseNamePredicateBuilder builder = new ABaseNamePredicateBuilder(entityQueryDsl);
+        if (!Strings.isNullOrEmpty(search)) {
+            for (Field field : getFilterableField()) {
+                if (field.isAnnotationPresent(Filterable.class)) {
+                    Filterable df = field.getAnnotation(Filterable.class);
+                    if (df.fieldType().equalsIgnoreCase("string")) {
+                        builder.with(field.getName(), ":", search);
+                    }
+//                System.out.println(field.getName()+" "+df.fieldType());
+                }
+            }
+        }
 
-        Predicate predicate = builder.build();
+        Predicate predicate = builder.buildOr();
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(predicate, request);
         if (!collections.iterator().hasNext()) {
@@ -218,6 +228,40 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
         }
     }
 
+    @Override
+    public String printFilterableFields() {
+        List<Field> fields = new ArrayList<>();
+        Class c = clazz.getClass();
+        StringBuilder sb = new StringBuilder();
+        while (c != Object.class) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            c = c.getSuperclass();
+        }
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Filterable.class)) {
+                Filterable df = field.getAnnotation(Filterable.class);
+                sb.append(field.getName() + " ");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String printSimpleName() {
+        return getEntityName();
+    }
+
+    protected List<Field> getFilterableField() {
+        List<Field> fields = new ArrayList<>();
+        Class c = clazz.getClass();
+        StringBuilder sb = new StringBuilder();
+        while (c != Object.class) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            c = c.getSuperclass();
+        }
+        return fields;
+    }
+
     /**
      * Method for get name of Generic Class
      *
@@ -228,4 +272,10 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
                 .getGenericSuperclass()).getActualTypeArguments()[0]).getTypeName();
     }
 
+    protected String getEntityName() {
+        String temp = clazz.getClass().getSimpleName();
+        String restString = temp.substring(1, temp.length());
+        String firstLetter = clazz.getClass().getSimpleName().substring(0, 1).toLowerCase();
+        return firstLetter + restString;
+    }
 }

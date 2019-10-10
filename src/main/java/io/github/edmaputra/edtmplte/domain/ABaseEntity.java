@@ -23,7 +23,6 @@ public abstract class ABaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 10, name = "version")
-	@Filterable
 	protected String version = "1";
 
 	@CreationTimestamp

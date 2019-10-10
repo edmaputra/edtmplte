@@ -34,13 +34,31 @@ public class ABaseNamePredicateBuilder {
         }
 
         List<BooleanExpression> predicates = params.stream().map(param -> {
-            ABaseNamePredicate predicate = new ABaseNamePredicate(param, entity );
+            ABaseNamePredicate predicate = new ABaseNamePredicate(param, entity);
             return predicate.getPredicate();
         }).filter(Objects::nonNull).collect(Collectors.toList());
 
         BooleanExpression result = Expressions.asBoolean(true).isTrue();
-        for (BooleanExpression p: predicates) {
+        for (BooleanExpression p : predicates) {
             result = result.and(p);
+        }
+
+        return result;
+    }
+
+    public BooleanExpression buildOr() {
+        if (params.size() == 0) {
+            return null;
+        }
+
+        List<BooleanExpression> predicates = params.stream().map(param -> {
+            ABaseNamePredicate predicate = new ABaseNamePredicate(param, entity);
+            return predicate.getPredicate();
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+        BooleanExpression result = Expressions.asBoolean(true).isTrue();
+        for (BooleanExpression p : predicates) {
+            result = result.or(p);
         }
 
         return result;
