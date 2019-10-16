@@ -80,6 +80,27 @@ public abstract class ABaseQDSLController<T extends Serializable, ID> {
     }
 
     /**
+     * Retrieve All Entity, produces JSON
+     *
+     * @param page number of the page
+     * @param size amount of the data
+     * @param sortBy Sort data based on
+     * @param search search keyword
+     * @return {@link ResponseEntity} with data in the body
+     */
+    @GetMapping(value = "/q1", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                      @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                      @RequestParam(name = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                      @RequestParam(name = "search", defaultValue = "", required = false) String search,
+                                      @RequestParam(name = "inactive", defaultValue = "false", required = false) Boolean showInactive,
+                                      Principal principal
+    ) throws Exception {
+        Iterable<T> data = service.retrieveAll(page, size, sortBy, search, entity, filterBy, showInactive);
+        return ResponseEntity.ok(data);
+    }
+
+    /**
      * Retrieve Entity By ID, produces JSON
      *
      * @param id Id of the entity
