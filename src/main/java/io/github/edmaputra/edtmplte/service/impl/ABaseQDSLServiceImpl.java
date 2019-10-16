@@ -156,16 +156,16 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
      */
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity, List<String> filterBy, boolean showInactive) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search + ", Inactive: " + showInactive).toString());
         ABasePredicateBuilder predicateBuilder = new ABasePredicateBuilder(entity);
         if (!Strings.isNullOrEmpty(search)) {
             for (String s: filterBy) {
                 predicateBuilder.with(s, ":", search, DataType.STRING);
             }
         }
-        if (!showInactive) {
+//        if (!showInactive) {
             predicateBuilder.with("recorded", ":", true, DataType.BOOLEAN);
-        }
+//        }
 
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(predicateBuilder.buildOr(), request);
