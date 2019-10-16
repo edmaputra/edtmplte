@@ -60,8 +60,8 @@ public abstract class ABaseController<T extends Serializable, ID> {
      * @param search search keyword
      * @return {@link ResponseEntity} with data in the body
      */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+    @GetMapping(value="/q", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity retrieveAll1(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                       @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
                                       @RequestParam(name = "sortBy", defaultValue = "", required = false) String sortBy,
                                       @RequestParam(name = "search", defaultValue = "", required = false) String search,

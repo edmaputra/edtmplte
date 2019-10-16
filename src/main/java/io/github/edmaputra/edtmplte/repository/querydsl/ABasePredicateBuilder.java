@@ -28,6 +28,11 @@ public class ABasePredicateBuilder {
         return this;
     }
 
+    public ABasePredicateBuilder with(String key, String operation, Object value, DataType dataType) {
+        params.add(new SearchCriteria(key, operation, value, dataType));
+        return this;
+    }
+
     public BooleanExpression build() {
         if (params.size() == 0) {
             return null;

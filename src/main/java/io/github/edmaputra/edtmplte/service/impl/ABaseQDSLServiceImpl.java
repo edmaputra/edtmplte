@@ -8,6 +8,7 @@ import io.github.edmaputra.edtmplte.logger.LogEntity;
 import io.github.edmaputra.edtmplte.repository.ABaseQDSLRepository;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
 import io.github.edmaputra.edtmplte.repository.querydsl.ABasePredicateBuilder;
+import io.github.edmaputra.edtmplte.repository.querydsl.DataType;
 import io.github.edmaputra.edtmplte.service.ABaseQDSLService;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
@@ -119,19 +120,55 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
      * @param size   how many data to displayed
      * @param sortBy   type of sort in {@link String}
      * @param search if user want to filter with value
-     * @param entity if user want to filter with value
+     * @param entity entity the entity name
      * @return {@link Iterable}
-     * @since 1.0
+     * @since 1.0.3.1
      */
     @Override
-    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity) throws Exception {
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity, List<String> filterBy) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
         ABasePredicateBuilder predicateBuilder = new ABasePredicateBuilder(entity);
         if (!Strings.isNullOrEmpty(search)) {
-            predicateBuilder.with("name", ":", search);
+            for (String s: filterBy) {
+                predicateBuilder.with(s, ":", search, DataType.STRING);
+            }
         }
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(predicateBuilder.build(), request);
+        Iterable<T> collections = repository.findAll(predicateBuilder.buildOr(), request);
+        if (!collections.iterator().hasNext()) {
+            throw new DataEmptyException("Record is Empty");
+        }
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
+        return collections;
+    }
+
+    /**
+     * Retrieves all entities by some parameter for limiter
+     *
+     * @param page   number of the page
+     * @param size   how many data to displayed
+     * @param sortBy   type of sort in {@link String}
+     * @param search if user want to filter with value
+     * @param entity the entity name
+     * @param showInactive Show all or just active entity
+     * @return {@link Iterable}
+     * @since 1.0.3.1
+     */
+    @Override
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity, List<String> filterBy, boolean showInactive) throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+        ABasePredicateBuilder predicateBuilder = new ABasePredicateBuilder(entity);
+        if (!Strings.isNullOrEmpty(search)) {
+            for (String s: filterBy) {
+                predicateBuilder.with(s, ":", search, DataType.STRING);
+            }
+        }
+        if (!showInactive) {
+            predicateBuilder.with("recorded", ":", true, DataType.BOOLEAN);
+        }
+
+        PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
+        Iterable<T> collections = repository.findAll(predicateBuilder.buildOr(), request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }

@@ -8,6 +8,8 @@ public class SearchCriteria {
 
     private Object value;
 
+    private DataType dataType;
+
     public SearchCriteria() {
     }
 
@@ -15,6 +17,21 @@ public class SearchCriteria {
         this.key = key;
         this.operation = operation;
         this.value = value;
+    }
+
+    public SearchCriteria(String key, String operation, Object value, DataType dataType) {
+        this.key = key;
+        this.operation = operation;
+        this.value = value;
+        this.dataType = dataType;
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
     }
 
     public String getKey() {

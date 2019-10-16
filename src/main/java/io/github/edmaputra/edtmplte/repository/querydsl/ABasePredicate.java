@@ -1,6 +1,7 @@
 package io.github.edmaputra.edtmplte.repository.querydsl;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
@@ -26,10 +27,15 @@ public class ABasePredicate {
 
     public BooleanExpression getPredicate() {
         PathBuilder<ABaseEntity> entityPath = new PathBuilder<>(ABaseEntity.class, entity);
-
-        StringPath path = entityPath.getString(criteria.getKey());
-        if (criteria.getOperation().equalsIgnoreCase(":")) {
-            return path.containsIgnoreCase(criteria.getValue().toString());
+        if(criteria.getDataType().equals(DataType.STRING)) {
+            StringPath path = entityPath.getString(criteria.getKey());
+            if (criteria.getOperation().equalsIgnoreCase(":")) {
+                return path.containsIgnoreCase(criteria.getValue().toString());
+            }
+        }
+        else if(criteria.getDataType().equals(DataType.BOOLEAN)) {
+            BooleanPath path = entityPath.getBoolean(criteria.getKey());
+            return path.eq((Boolean) criteria.getValue());
         }
 
         return null;

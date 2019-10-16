@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Base Controller for Presentation Layer.
@@ -34,9 +35,12 @@ public abstract class ABaseQDSLController<T extends Serializable, ID> {
 
     private final String entity;
 
-    public ABaseQDSLController(ABaseQDSLService<T, ID> service, String entity) {
+    private final List<String> filterBy;
+
+    public ABaseQDSLController(ABaseQDSLService<T, ID> service, String entity, List<String> filterBy) {
         this.service = service;
         this.entity = entity;
+        this.filterBy = filterBy;
     }
 
     /**
@@ -67,11 +71,11 @@ public abstract class ABaseQDSLController<T extends Serializable, ID> {
     @GetMapping(value = "/q", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                       @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
-                                      @RequestParam(name = "sortBy", defaultValue = "", required = false) String sortBy,
+                                      @RequestParam(name = "sortBy", defaultValue = "id", required = false) String sortBy,
                                       @RequestParam(name = "search", defaultValue = "", required = false) String search,
                                       Principal principal
     ) throws Exception {
-        Iterable<T> data = service.retrieveAll(page, size, sortBy, search, entity);
+        Iterable<T> data = service.retrieveAll(page, size, sortBy, search, entity, filterBy);
         return ResponseEntity.ok(data);
     }
 
