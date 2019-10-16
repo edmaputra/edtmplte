@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABaseQueryDslService<T, ID> {
 
-    private final ABaseEntity clazz;
+    private Class<T> clazz;
 
     private final ABaseQueryDslRepository<T, ID> repository;
 
@@ -45,11 +45,15 @@ public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABas
 
     private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslServiceImpl.class);
 
-    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository repository, ABaseEntity t) {
+    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository repository) {
         this.repository = repository;
-        this.clazz = t;
         this.domainClassName = getGenericName();
-        this.entityQueryDsl = getEntityName();
+        this.entityQueryDsl = "employee";
+        System.out.println(clazz.toGenericString());
+        System.out.println(clazz.toString());
+
+//        this.entityQueryDsl = this.getEntityName();
+
     }
 
     /**
