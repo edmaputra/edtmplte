@@ -1,5 +1,6 @@
 package io.github.edmaputra.edtmplte.service.impl;
 
+import com.google.common.base.Strings;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
@@ -93,7 +94,7 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
      *
      * @param page   number of the page
      * @param size   how many data to displayed
-     * @param sort   type of sort in {@link String}
+     * @param sortBy   type of sort in {@link String}
      * @param search if user want to filter with value
      * @return {@link Iterable}
      * @since 1.0
@@ -116,7 +117,7 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
      *
      * @param page   number of the page
      * @param size   how many data to displayed
-     * @param sort   type of sort in {@link String}
+     * @param sortBy   type of sort in {@link String}
      * @param search if user want to filter with value
      * @param entity if user want to filter with value
      * @return {@link Iterable}
@@ -126,9 +127,11 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
         ABasePredicateBuilder predicateBuilder = new ABasePredicateBuilder(entity);
-
+        if (!Strings.isNullOrEmpty(search)) {
+            predicateBuilder.with("name", ":", search);
+        }
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(request);
+        Iterable<T> collections = repository.findAll(predicateBuilder.build(), request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
