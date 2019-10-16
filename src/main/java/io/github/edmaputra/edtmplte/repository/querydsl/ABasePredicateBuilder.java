@@ -8,22 +8,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ABaseNamePredicateBuilder {
+public class ABasePredicateBuilder {
 
     private List<SearchCriteria> params;
 
     private String entity;
 
-    public ABaseNamePredicateBuilder() {
+    public ABasePredicateBuilder() {
         this.params = new ArrayList<>();
     }
 
-    public ABaseNamePredicateBuilder(String entity) {
+    public ABasePredicateBuilder(String entity) {
         this.params = new ArrayList<>();
         this.entity = entity;
     }
 
-    public ABaseNamePredicateBuilder with(String key, String operation, Object value) {
+    public ABasePredicateBuilder with(String key, String operation, Object value) {
         params.add(new SearchCriteria(key, operation, value));
         return this;
     }
@@ -34,7 +34,7 @@ public class ABaseNamePredicateBuilder {
         }
 
         List<BooleanExpression> predicates = params.stream().map(param -> {
-            ABaseNamePredicate predicate = new ABaseNamePredicate(param, entity);
+            ABasePredicate predicate = new ABasePredicate(param, entity);
             return predicate.getPredicate();
         }).filter(Objects::nonNull).collect(Collectors.toList());
 
@@ -52,7 +52,7 @@ public class ABaseNamePredicateBuilder {
         }
 
         List<BooleanExpression> predicates = params.stream().map(param -> {
-            ABaseNamePredicate predicate = new ABaseNamePredicate(param, entity);
+            ABasePredicate predicate = new ABasePredicate(param, entity);
             return predicate.getPredicate();
         }).filter(Objects::nonNull).collect(Collectors.toList());
 

@@ -4,7 +4,10 @@ import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
+import io.github.edmaputra.edtmplte.repository.ABaseQDSLRepository;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
+import io.github.edmaputra.edtmplte.repository.querydsl.ABasePredicateBuilder;
+import io.github.edmaputra.edtmplte.service.ABaseQDSLService;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,7 @@ import java.util.Optional;
  * @author edmaputra
  * @since 1.0.3.1
  */
-public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
+public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDSLService<T, ID> {
 
     /**
      * Domain Class Name from Generic Class T
@@ -38,9 +41,9 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseSer
     /**
      * The Repository
      */
-    private ABaseRepository<T, ID> repository;
+    private ABaseQDSLRepository<T, ID> repository;
 
-    public ABaseQDSLServiceImpl(ABaseRepository<T, ID> repository) {
+    public ABaseQDSLServiceImpl(ABaseQDSLRepository<T, ID> repository) {
         this.repository = repository;
         this.domainClassName = getGenericName();
     }
@@ -98,6 +101,31 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseSer
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+
+        PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
+        Iterable<T> collections = repository.findAll(request);
+        if (!collections.iterator().hasNext()) {
+            throw new DataEmptyException("Record is Empty");
+        }
+        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
+        return collections;
+    }
+
+    /**
+     * Retrieves all entities by some parameter for limiter
+     *
+     * @param page   number of the page
+     * @param size   how many data to displayed
+     * @param sort   type of sort in {@link String}
+     * @param search if user want to filter with value
+     * @param entity if user want to filter with value
+     * @return {@link Iterable}
+     * @since 1.0
+     */
+    @Override
+    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String entity) throws Exception {
+        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+        ABasePredicateBuilder predicateBuilder = new ABasePredicateBuilder(entity);
 
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
         Iterable<T> collections = repository.findAll(request);
