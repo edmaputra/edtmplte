@@ -58,6 +58,7 @@ public class ABasePredicateBuilder {
 
         List<BooleanExpression> predicates = params.stream().map(param -> {
             ABasePredicate predicate = new ABasePredicate(param, entity);
+            System.out.println(predicate.getPredicate());
             return predicate.getPredicate();
         }).filter(Objects::nonNull).collect(Collectors.toList());
 

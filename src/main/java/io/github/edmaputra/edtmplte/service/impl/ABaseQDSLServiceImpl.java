@@ -134,7 +134,7 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
             }
         }
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(predicateBuilder.buildOr(), request);
+        Iterable<T> collections = repository.findAll(predicateBuilder.build(), request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
@@ -163,12 +163,12 @@ public class ABaseQDSLServiceImpl<T extends ABaseEntity, ID> implements ABaseQDS
                 predicateBuilder.with(s, ":", search, DataType.STRING);
             }
         }
-//        if (!showInactive) {
+        if (!showInactive) {
             predicateBuilder.with("recorded", ":", true, DataType.BOOLEAN);
-//        }
+        }
 
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(predicateBuilder.buildOr(), request);
+        Iterable<T> collections = repository.findAll(predicateBuilder.build(), request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
