@@ -29,3 +29,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/edtmplte-test/
+/.idea/
