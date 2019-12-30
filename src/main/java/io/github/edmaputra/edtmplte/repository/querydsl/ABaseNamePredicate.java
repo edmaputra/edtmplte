@@ -3,7 +3,7 @@ package io.github.edmaputra.edtmplte.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
-import io.github.edmaputra.edtmplte.domain.ABaseNamedEntity;
+import io.github.edmaputra.edtmplte.domain.ABaseIdEntity;
 
 public class ABaseNamePredicate {
 
@@ -24,7 +24,7 @@ public class ABaseNamePredicate {
     }
 
     public BooleanExpression getPredicate() {
-        PathBuilder<ABaseNamedEntity> entityPath = new PathBuilder<>(ABaseNamedEntity.class, entity);
+        PathBuilder<ABaseIdEntity> entityPath = new PathBuilder<>(ABaseIdEntity.class, entity);
 
         StringPath path = entityPath.getString(criteria.getKey());
         if (criteria.getOperation().equalsIgnoreCase(":")) {

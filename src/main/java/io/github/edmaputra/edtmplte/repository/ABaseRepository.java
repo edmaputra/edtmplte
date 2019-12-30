@@ -4,6 +4,7 @@ import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.Optional;
  * @since 1.0
  */
 @NoRepositoryBean
-public interface ABaseRepository<T extends ABaseEntity, ID> extends JpaRepository<T, ID> {
+public interface ABaseRepository<T extends ABaseEntity, ID> extends JpaRepository<T, ID>, QuerydslPredicateExecutor<T> {
 
     /**
      * Returns a {@link java.util.Optional} of entities with paging restriction provided in the {@code Pageable} object

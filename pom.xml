@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.edmaputra</groupId>
     <artifactId>edtmplte</artifactId>
     <version>0.0.5-SNAPSHOT</version>
-<!--    <packaging>jar</packaging>-->
     <name>edtmplte</name>
     <description>Base Template for Spring Boot Application</description>
     <url>https://github.com/edmaputra/edtmplte</url>
@@ -25,14 +25,14 @@
     </licenses>
 
     <developers>
-		<developer>
-			<name>Bangun Edma Saputra</name>
-			<email>bangun.edma.saputra@gmail.com</email>
-			<organization>edtmplte</organization>
-			<organizationUrl>https://github.com/edmaputra</organizationUrl>
-			<timezone>UTC+08:00</timezone>
-		</developer>
-	</developers>
+        <developer>
+            <name>Bangun Edma Saputra</name>
+            <email>bangun.edma.saputra@gmail.com</email>
+            <organization>edtmplte</organization>
+            <organizationUrl>https://github.com/edmaputra</organizationUrl>
+            <timezone>UTC+08:00</timezone>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <snapshotRepository>
@@ -106,7 +106,6 @@
             <artifactId>spring-data-commons</artifactId>
             <version>2.1.5.RELEASE</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -144,7 +143,12 @@
             <artifactId>guava</artifactId>
             <version>28.0-jre</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

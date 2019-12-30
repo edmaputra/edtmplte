@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Entity Abstract Class as domain for database transaction
@@ -27,14 +27,14 @@ public abstract class ABaseEntity implements Serializable {
 
 	@CreationTimestamp
 	@Column(name = "created_on")
-	protected Date createdOn = new Date();
+	protected LocalDate createdOn = LocalDate.MIN;
 
 	@Column(name = "creator", length = 70)
 	protected String creator = "sys";
 
 	@UpdateTimestamp
 	@Column(name = "updated_on")
-	protected Date updatedOn = new Date();
+	protected LocalDate updatedOn = LocalDate.MIN;
 
 	@Column(name = "updater", length = 70)
 	protected String updater = "sys";
@@ -45,7 +45,7 @@ public abstract class ABaseEntity implements Serializable {
 	public ABaseEntity() {
 	}
 
-	public ABaseEntity(String version, Date createdOn, String creator, Date updatedOn, String updater, boolean recorded) {
+	public ABaseEntity(String version, LocalDate createdOn, String creator, LocalDate updatedOn, String updater, boolean recorded) {
 		this.version = version;
 		this.createdOn = createdOn;
 		this.creator = creator;
@@ -62,11 +62,11 @@ public abstract class ABaseEntity implements Serializable {
 		this.version = version;
 	}
 
-	public Date getCreatedOn() {
+	public LocalDate getCreatedOn() {
 		return createdOn;
 	}
 
-	public void setCreatedOn(Date createdOn) {
+	public void setCreatedOn(LocalDate createdOn) {
 		this.createdOn = createdOn;
 	}
 
@@ -78,11 +78,11 @@ public abstract class ABaseEntity implements Serializable {
 		this.creator = creator;
 	}
 
-	public Date getUpdatedOn() {
+	public LocalDate getUpdatedOn() {
 		return updatedOn;
 	}
 
-	public void setUpdatedOn(Date updatedOn) {
+	public void setUpdatedOn(LocalDate updatedOn) {
 		this.updatedOn = updatedOn;
 	}
 

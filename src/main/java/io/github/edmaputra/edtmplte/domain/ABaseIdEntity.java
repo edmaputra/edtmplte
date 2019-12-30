@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -29,7 +30,7 @@ public abstract class ABaseIdEntity extends ABaseEntity {
 		this.id = id;
 	}
 
-	public ABaseIdEntity(String version, Date createdOn, String creator, Date updatedOn, String updater, boolean recorded, Long id) {
+	public ABaseIdEntity(String version, LocalDate createdOn, String creator, LocalDate updatedOn, String updater, boolean recorded, Long id) {
 		super(version, createdOn, creator, updatedOn, updater, recorded);
 		this.id = id;
 	}

@@ -1,28 +1,54 @@
 package io.github.edmaputra.edtmplte.domain.person;
 
 import io.github.edmaputra.edtmplte.domain.ABaseIdEntity;
-import io.github.edmaputra.edtmplte.domain.address.Address;
 
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public abstract class Person extends ABaseIdEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String firstName;
+    @NotBlank(message = "First Name Cannot Null or Empty")
+    private String firstName = "";
 
-    private String middleName;
+    @NotNull(message = "Middle Name Cannot Null, Empty is acceptable")
+    private String middleName = "";
 
-    private String lastName;
+    @NotNull(message = "Last Name Cannot Null, Empty is acceptable")
+    private String lastName = "";
 
-    private Gender gender;
+    @NotNull(message = "Gender Cannot Null")
+    private Gender gender = Gender.UNKNOWN;
 
-    private MaritalStatus maritalStatus;
+    @NotNull(message = "Marital Status Cannot Null")
+    private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
 
-    private String birthPlace;
+    @NotNull(message = "Birth Place Cannot Null")
+    private String birthPlace = "";
 
-    private Date birthDate;
+    @NotNull(message = "Birth Date Cannot Null")
+    private LocalDate birthDate = LocalDate.MIN;
+
+    public Person() {
+    }
+
+    public Person(@NotBlank(message = "First Name Cannot Null or Empty") String firstName,
+                  @NotNull(message = "Middle Name Cannot Null, Empty is acceptable") String middleName,
+                  @NotNull(message = "Last Name Cannot Null, Empty is acceptable") String lastName,
+                  @NotNull(message = "Gender Cannot Null") Gender gender,
+                  @NotNull(message = "Marital Status Cannot Null") MaritalStatus maritalStatus,
+                  @NotNull(message = "Birth Place Cannot Null") String birthPlace,
+                  @NotNull(message = "Birth Date Cannot Null") LocalDate birthDate) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.maritalStatus = maritalStatus;
+        this.birthPlace = birthPlace;
+        this.birthDate = birthDate;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -72,11 +98,11 @@ public abstract class Person extends ABaseIdEntity {
         this.birthPlace = birthPlace;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
