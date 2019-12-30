@@ -1,6 +1,7 @@
 package io.github.edmaputra.edtmplte.controller;
 
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
+import io.github.edmaputra.edtmplte.service.ABaseQueryDslService;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.security.Principal;
 
 /**
  * Base Controller for Presentation Layer.
@@ -22,16 +22,16 @@ import java.security.Principal;
  * @author edmaputra
  * @since 1.0
  */
-public abstract class ABaseController<T extends Serializable, ID> {
+public abstract class ABaseQueryDslController<T extends Serializable, ID> {
 
     /**
      * Service Class
      */
-    private ABaseService<T, ID> service;
+    private ABaseQueryDslService<T, ID> service;
 
-    private static final Logger log = LoggerFactory.getLogger(ABaseController.class);
+    private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslController.class);
 
-    public ABaseController(ABaseService<T, ID> service) {
+    public ABaseQueryDslController(ABaseQueryDslService<T, ID> service) {
         this.service = service;
     }
 

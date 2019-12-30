@@ -45,6 +45,19 @@ public interface ABaseService<T extends Serializable, ID> {
     Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception;
 
     /**
+     * Retrieves all entities by some parameter for limiter
+     *
+     * @param page   number of the page
+     * @param size   how many data to displayed
+     * @param sort   type of sort in {@link String}
+     * @param search if user want to filter with value
+     * @param option RECORDED for recorded is true, ALL for all saved data
+     * @return {@link Iterable}
+     * @since 1.0
+     */
+    Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception;
+
+    /**
      * Retrieves an entity by its id.
      *
      * @param id must not be {@literal null}.

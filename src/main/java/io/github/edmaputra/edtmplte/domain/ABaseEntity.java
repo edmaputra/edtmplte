@@ -1,5 +1,6 @@
 package io.github.edmaputra.edtmplte.domain;
 
+import io.github.edmaputra.edtmplte.annotation.Filterable;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

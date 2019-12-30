@@ -1,11 +1,15 @@
 package io.github.edmaputra.edtmplte.service.impl;
 
+import com.google.common.base.Strings;
+import com.querydsl.core.types.Predicate;
+import io.github.edmaputra.edtmplte.annotation.Filterable;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
-import io.github.edmaputra.edtmplte.domain.QABaseNamedEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
-import io.github.edmaputra.edtmplte.repository.ABaseRepository;
+import io.github.edmaputra.edtmplte.repository.ABaseQueryDslRepository;
+import io.github.edmaputra.edtmplte.repository.querydsl.ABaseNamePredicateBuilder;
+import io.github.edmaputra.edtmplte.service.ABaseQueryDslService;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,36 +18,42 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Class that implements {@link ABaseService} for Business Object Layer.
+ * Class that implements {@link ABaseService} for Business Object Layer with QueryDsl feature.
  *
  * @param <T>  the domain which extends {@link ABaseEntity}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.5
  */
-public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
+public class ABaseQueryDslServiceImpl<T extends ABaseEntity, ID> implements ABaseQueryDslService<T, ID> {
 
-    /**
-     * Domain Class Name from Generic Class T
-     */
+    private Class<T> clazz;
+
+    private final ABaseQueryDslRepository<T, ID> repository;
+
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
-    private static final Logger log = LoggerFactory.getLogger(ABaseServiceImpl.class);
+    private final String entityQueryDsl;
 
+    private static final Logger log = LoggerFactory.getLogger(ABaseQueryDslServiceImpl.class);
 
-    /**
-     * The Repository
-     */
-    private ABaseRepository<T, ID> repository;
-
-    public ABaseServiceImpl(ABaseRepository<T, ID> repository) {
+    public ABaseQueryDslServiceImpl(ABaseQueryDslRepository repository) {
         this.repository = repository;
         this.domainClassName = getGenericName();
+        this.entityQueryDsl = "employee";
+        System.out.println(clazz.toGenericString());
+        System.out.println(clazz.toString());
+
+//        this.entityQueryDsl = this.getEntityName();
+
     }
 
     /**
@@ -91,7 +101,7 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      *
      * @param page   number of the page
      * @param size   how many data to displayed
-     * @param sortBy   type of sort in {@link String}
+     * @param sortBy type of sort in {@link String}
      * @param search if user want to filter with value
      * @return {@link Iterable}
      * @since 1.0
@@ -99,9 +109,22 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
+        ABaseNamePredicateBuilder builder = new ABaseNamePredicateBuilder(entityQueryDsl);
+        if (!Strings.isNullOrEmpty(search)) {
+            for (Field field : getFilterableField()) {
+                if (field.isAnnotationPresent(Filterable.class)) {
+                    Filterable df = field.getAnnotation(Filterable.class);
+                    if (df.fieldType().equalsIgnoreCase("string")) {
+                        builder.with(field.getName(), ":", search);
+                    }
+//                System.out.println(field.getName()+" "+df.fieldType());
+                }
+            }
+        }
 
+        Predicate predicate = builder.buildOr();
         PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(request);
+        Iterable<T> collections = repository.findAll(predicate, request);
         if (!collections.iterator().hasNext()) {
             throw new DataEmptyException("Record is Empty");
         }
@@ -109,38 +132,9 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         return collections;
     }
 
-    /**
-     * Retrieves all entities by some parameter for limiter
-     *
-     * @param page   number of the page
-     * @param size   how many data to displayed
-     * @param sort   type of sort in {@link String}
-     * @param search if user want to filter with value
-     * @param option RECORDED for recorded is true, ALL for all saved data
-     * @return {@link Iterable}
-     * @since 1.0
-     */
     @Override
     public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search + ", Option: " + option).toString());
-
-        PageRequest request = PageRequest.of(page - 1, size);
-        Page<T> collections = null;
-        if (option.equalsIgnoreCase("RECORDED")) {
-            Optional<Page<T>> temp = repository.findByRecordedTrue(request);
-            collections = temp.get();
-        } else if (option.equalsIgnoreCase("ALL")) {
-            collections = repository.findAll(request);
-        }
-
-        if (collections == null) {
-            throw new DataNotFoundException(layerName, domainClassName);
-        }
-        if (collections.isEmpty()) {
-            throw new DataEmptyException(layerName, domainClassName);
-        }
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
-        return collections;
+        return null;
     }
 
     /**
@@ -238,6 +232,40 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         }
     }
 
+    @Override
+    public String printFilterableFields() {
+        List<Field> fields = new ArrayList<>();
+        Class c = clazz.getClass();
+        StringBuilder sb = new StringBuilder();
+        while (c != Object.class) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            c = c.getSuperclass();
+        }
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Filterable.class)) {
+                Filterable df = field.getAnnotation(Filterable.class);
+                sb.append(field.getName() + " ");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String printSimpleName() {
+        return getEntityName();
+    }
+
+    protected List<Field> getFilterableField() {
+        List<Field> fields = new ArrayList<>();
+        Class c = clazz.getClass();
+        StringBuilder sb = new StringBuilder();
+        while (c != Object.class) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            c = c.getSuperclass();
+        }
+        return fields;
+    }
+
     /**
      * Method for get name of Generic Class
      *
@@ -248,4 +276,10 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
                 .getGenericSuperclass()).getActualTypeArguments()[0]).getTypeName();
     }
 
+    protected String getEntityName() {
+        String temp = clazz.getClass().getSimpleName();
+        String restString = temp.substring(1, temp.length());
+        String firstLetter = clazz.getClass().getSimpleName().substring(0, 1).toLowerCase();
+        return firstLetter + restString;
+    }
 }
