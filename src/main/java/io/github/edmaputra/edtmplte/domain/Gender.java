@@ -1,4 +1,4 @@
-package io.github.edmaputra.edtmplte.domain.person;
+package io.github.edmaputra.edtmplte.domain;
 
 public enum Gender {
 

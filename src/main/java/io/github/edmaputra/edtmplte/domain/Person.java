@@ -1,66 +1,52 @@
-package io.github.edmaputra.edtmplte.domain.person;
+package io.github.edmaputra.edtmplte.domain;
 
-import io.github.edmaputra.edtmplte.domain.ABaseIdEntity;
-import io.github.edmaputra.edtmplte.domain.address.Address;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.temporal.ChronoUnit;
 
+@MappedSuperclass
 public abstract class Person extends ABaseIdEntity {
 
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "First Name Cannot Null or Empty")
     @Column(name = "first_name", length = 150)
-    private String firstName = "";
+    protected String firstName = "";
 
     @NotNull(message = "Middle Name Cannot Null, Empty is acceptable")
     @Column(name = "middle_name", length = 150, nullable = false)
-    private String middleName = "";
+    protected String middleName = "";
 
     @NotNull(message = "Last Name Cannot Null, Empty is acceptable")
     @Column(name = "last_name", length = 150, nullable = false)
-    private String lastName = "";
+    protected String lastName = "";
 
     @NotNull(message = "Gender Cannot Null")
     @Column(name = "gender", length = 25, nullable = false)
-    private Gender gender = Gender.UNKNOWN;
+    protected Gender gender = Gender.UNKNOWN;
 
     @NotNull(message = "Marital Status Cannot Null")
     @Column(name = "marital_status", length = 25, nullable = false)
-    private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
+    protected MaritalStatus maritalStatus = MaritalStatus.SINGLE;
 
     @NotNull(message = "Birth Place Cannot Null")
     @Column(name = "birth_place", length = 70, nullable = false)
-    private String birthPlace = "";
+    protected String birthPlace = "";
 
     @NotNull(message = "Birth Date Cannot Null")
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate = LocalDate.MIN;
+    protected LocalDate birthDate = LocalDate.MIN;
 
     @NotNull(message = "Phone Number Cannot Null")
     @Column(name = "phone_number", length = 20, nullable = false)
-    private String phoneNumber;
+    protected String phoneNumber = "";
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(
-            name = "person_address",
-            joinColumns = { @JoinColumn(name = "person_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "address_id", nullable = false) }
-    )
-    private Set<Address> addresses = new HashSet<>();
+    @NotNull(message = "Email Cannot Null")
+    @Column(name = "email", nullable = false)
+    protected String email = "";
 
     public Person() {
     }
@@ -73,7 +59,8 @@ public abstract class Person extends ABaseIdEntity {
             @NotNull(message = "Marital Status Cannot Null") MaritalStatus maritalStatus,
             @NotNull(message = "Birth Place Cannot Null") String birthPlace,
             @NotNull(message = "Birth Date Cannot Null") LocalDate birthDate,
-            @NotNull(message = "Phone Number Cannot Null") String phoneNumber
+            @NotNull(message = "Phone Number Cannot Null") String phoneNumber,
+            @NotNull(message = "Email Cannot Null") String email
     ) {
         this.firstName = firstName;
         this.middleName = middleName;
@@ -83,6 +70,7 @@ public abstract class Person extends ABaseIdEntity {
         this.birthPlace = birthPlace;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -149,12 +137,16 @@ public abstract class Person extends ABaseIdEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
+    public String getEmail() {
+        return email;
     }
 
-    public void addAddress(Address address) {
-        this.addresses.add(address);
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public long getAge() {
+        return ChronoUnit.YEARS.between(birthDate, LocalDate.now());
     }
 
     @Override
