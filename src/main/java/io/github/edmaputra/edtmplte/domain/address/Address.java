@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Address extends ABaseIdEntity {
+public abstract class Address<T> extends ABaseIdEntity<T> {
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

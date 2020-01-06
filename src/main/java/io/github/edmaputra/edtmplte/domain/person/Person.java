@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Person extends ABaseIdEntity {
+public abstract class Person<T> extends ABaseIdEntity<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,8 +57,8 @@ public abstract class Person extends ABaseIdEntity {
     })
     @JoinTable(
             name = "person_address",
-            joinColumns = { @JoinColumn(name = "person_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "address_id", nullable = false) }
+            joinColumns = {@JoinColumn(name = "person_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "address_id", nullable = false)}
     )
     private Set<Address> addresses = new HashSet<>();
 
