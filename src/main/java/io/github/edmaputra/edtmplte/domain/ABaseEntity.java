@@ -12,7 +12,6 @@ import java.time.LocalDate;
 /**
  * Entity Abstract Class as domain for database transaction
  * it's implements {@link Serializable}
- * and use Lombok's {@link Data} and {@link NoArgsConstructor} for reduce boilerplate code.
  *
  * @author edmaputra
  * @since 1.0
@@ -27,14 +26,14 @@ public abstract class ABaseEntity implements Serializable {
 
 	@CreationTimestamp
 	@Column(name = "created_on")
-	protected LocalDate createdOn = LocalDate.MIN;
+	protected LocalDate createdOn = LocalDate.now();
 
 	@Column(name = "creator", length = 70)
 	protected String creator = "sys";
 
 	@UpdateTimestamp
 	@Column(name = "updated_on")
-	protected LocalDate updatedOn = LocalDate.MIN;
+	protected LocalDate updatedOn = LocalDate.now();
 
 	@Column(name = "updater", length = 70)
 	protected String updater = "sys";

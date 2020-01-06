@@ -1,42 +1,47 @@
-package io.github.edmaputra.edtmplte.domain.address;
+package io.github.edmaputra.edtmplte.domain;
 
-import io.github.edmaputra.edtmplte.domain.ABaseIdEntity;
-import io.github.edmaputra.edtmplte.domain.person.Person;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 
+@MappedSuperclass
 public abstract class Address<T> extends ABaseIdEntity<T> {
-
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, mappedBy = "addresses")
-    private Set<Person> persons = new HashSet<>();
 
     @NotBlank(message = "Street Name Cannot Null or Empty")
     @Column(name = "street", length = 150, nullable = false)
-    private String street;
+    protected String street = "";
 
     @NotBlank(message = "City Name Cannot Null or Empty")
     @Column(name = "city", length = 100, nullable = false)
-    private String city;
+    protected String city = "";
 
     @NotBlank(message = "Province Name Cannot Null or Empty")
     @Column(name = "province", length = 100, nullable = false)
-    private String province;
+    protected String province = "";
 
     @NotBlank(message = "Zip Code Name Cannot Null or Empty")
     @Column(name = "zip_code", length = 10, nullable = false)
-    private String zipCode;
+    protected String zipCode = "";
 
     @NotBlank(message = "Country Name Cannot Null or Empty")
     @Column(name = "country", length = 80, nullable = false)
-    private String country;
+    protected String country = "";
+
+    public Address() {
+    }
+
+    public Address(
+            @NotBlank(message = "Street Name Cannot Null or Empty") String street,
+            @NotBlank(message = "City Name Cannot Null or Empty") String city,
+            @NotBlank(message = "Province Name Cannot Null or Empty") String province,
+            @NotBlank(message = "Zip Code Name Cannot Null or Empty") String zipCode,
+            @NotBlank(message = "Country Name Cannot Null or Empty") String country) {
+        this.street = street;
+        this.city = city;
+        this.province = province;
+        this.zipCode = zipCode;
+        this.country = country;
+    }
 
     public String getStreet() {
         return street;
@@ -78,18 +83,9 @@ public abstract class Address<T> extends ABaseIdEntity<T> {
         this.country = country;
     }
 
-    public Set<Person> getPersons() {
-        return persons;
-    }
-
-    public void addPerson(Person person) {
-        this.persons.add(person);
-    }
-
     @Override
     public String toString() {
         return "Address{" +
-                "persons=" + persons +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", province='" + province + '\'' +
