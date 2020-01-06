@@ -5,7 +5,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Entity Abstract Class which extending the {@link ABaseEntity}.
@@ -15,31 +14,31 @@ import java.util.Date;
  * @since 1.0
  */
 @MappedSuperclass
-public abstract class ABaseIdEntity extends ABaseEntity {
+public abstract class ABaseIdEntity<T> extends ABaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Long id;
+	protected T id;
 
 	public ABaseIdEntity() {
 	}
 
-	public ABaseIdEntity(Long id) {
+	public ABaseIdEntity(T id) {
 		this.id = id;
 	}
 
-	public ABaseIdEntity(String version, LocalDate createdOn, String creator, LocalDate updatedOn, String updater, boolean recorded, Long id) {
+	public ABaseIdEntity(String version, LocalDate createdOn, String creator, LocalDate updatedOn, String updater, boolean recorded, T id) {
 		super(version, createdOn, creator, updatedOn, updater, recorded);
 		this.id = id;
 	}
 
-	public Long getId() {
+	public T getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(T id) {
 		this.id = id;
 	}
 
