@@ -4,7 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDate;
+import java.time.Instant;
 
 /**
  * Entity Abstract Class which extending the {@link ABaseEntity}.
@@ -16,42 +16,42 @@ import java.time.LocalDate;
 @MappedSuperclass
 public abstract class ABaseIdEntity<T> extends ABaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected T id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected T id;
 
-	public ABaseIdEntity() {
-	}
+    public ABaseIdEntity() {
+    }
 
-	public ABaseIdEntity(T id) {
-		this.id = id;
-	}
+    public ABaseIdEntity(T id) {
+        this.id = id;
+    }
 
-	public ABaseIdEntity(String version, LocalDate createdOn, String creator, LocalDate updatedOn, String updater, boolean recorded, T id) {
-		super(version, createdOn, creator, updatedOn, updater, recorded);
-		this.id = id;
-	}
+    public ABaseIdEntity(String version, Instant createdOn, String creator, Instant updatedOn, String updater, boolean recorded, T id) {
+        super(version, createdOn, creator, updatedOn, updater, recorded);
+        this.id = id;
+    }
 
-	public T getId() {
-		return id;
-	}
+    public T getId() {
+        return id;
+    }
 
-	public void setId(T id) {
-		this.id = id;
-	}
+    public void setId(T id) {
+        this.id = id;
+    }
 
-	@Override
-	public String toString() {
-		return "ABaseIdEntity{" +
-				"id=" + id +
-				", version='" + version + '\'' +
-				", createdOn=" + createdOn +
-				", creator='" + creator + '\'' +
-				", updatedOn=" + updatedOn +
-				", updater='" + updater + '\'' +
-				", recorded=" + recorded +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "ABaseIdEntity{" +
+                "id=" + id +
+                ", version='" + version + '\'' +
+                ", createdOn=" + createdOn +
+                ", creator='" + creator + '\'' +
+                ", updatedOn=" + updatedOn +
+                ", updater='" + updater + '\'' +
+                ", recorded=" + recorded +
+                '}';
+    }
 }

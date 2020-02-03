@@ -2,8 +2,10 @@ package io.github.edmaputra.edtmplte.domain;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -13,15 +15,17 @@ public abstract class Person<T> extends ABaseIdEntity<T> {
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "First Name Cannot Null or Empty")
+    @Size(min = 3)
     @Column(name = "first_name", length = 150)
     protected String firstName = "";
 
     @NotNull(message = "Middle Name Cannot Null, Empty is acceptable")
-    @Column(name = "middle_name", length = 150, nullable = false)
+    @Column(name = "middle_name", length = 150, nullable = true)
     protected String middleName = "";
 
     @NotNull(message = "Last Name Cannot Null, Empty is acceptable")
     @Column(name = "last_name", length = 150, nullable = false)
+    @Size(min = 3)
     protected String lastName = "";
 
     @NotNull(message = "Gender Cannot Null")
@@ -46,6 +50,7 @@ public abstract class Person<T> extends ABaseIdEntity<T> {
 
     @NotNull(message = "Email Cannot Null")
     @Column(name = "email", nullable = false)
+    @Email
     protected String email = "";
 
     public Person() {
