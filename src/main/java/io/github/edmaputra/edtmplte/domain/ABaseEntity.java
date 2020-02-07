@@ -1,7 +1,10 @@
 package io.github.edmaputra.edtmplte.domain;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -16,6 +19,7 @@ import java.time.Instant;
  * @since 1.0
  */
 @MappedSuperclass
+@Audited
 public abstract class ABaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,19 +27,21 @@ public abstract class ABaseEntity implements Serializable {
     @Column(length = 10, name = "version")
     protected String version = "1";
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_on")
-    protected Instant createdOn = Instant.now();
+    protected Instant createdOn;
 
+    @CreatedBy
     @Column(name = "creator", length = 70)
-    protected String creator = "sys";
+    protected String creator;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "updated_on")
-    protected Instant updatedOn = Instant.now();
+    protected Instant updatedOn;
 
+    @LastModifiedBy
     @Column(name = "updater", length = 70)
-    protected String updater = "sys";
+    protected String updater;
 
     @Column(name = "recorded")
     protected boolean recorded = true;

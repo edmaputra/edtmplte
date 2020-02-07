@@ -1,18 +1,17 @@
 package io.github.edmaputra.edtmplte.service.impl;
 
-import com.querydsl.core.types.Predicate;
 import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.exception.DataEmptyException;
 import io.github.edmaputra.edtmplte.exception.DataNotFoundException;
 import io.github.edmaputra.edtmplte.logger.LogEntity;
 import io.github.edmaputra.edtmplte.repository.ABaseRepository;
-import io.github.edmaputra.edtmplte.repository.querydsl.ABaseNamePredicateBuilder;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.ParameterizedType;
@@ -68,79 +67,24 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
     /**
      * Retrieves all entities by some parameter for limiter
      *
-     * @param page number of the page
-     * @param size how many data to displayed
-     * @return {@link Iterable}
-     * @since 1.0
-     */
-    @Override
-    public Iterable<T> retrieveAll(Integer page, Integer size) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size).toString());
-        ABaseNamePredicateBuilder builder = new ABaseNamePredicateBuilder(entityQueryDsl);
-
-        Predicate predicate = builder.buildOr();
-        PageRequest request = PageRequest.of(page - 1, size);
-        Iterable<T> collections = repository.findAll(predicate, request);
-
-        if (!collections.iterator().hasNext()) {
-            throw new DataEmptyException(layerName, domainClassName);
-        }
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
-        return collections;
-    }
-
-    /**
-     * Retrieves all entities by some parameter for limiter
-     *
      * @param page   number of the page
      * @param size   how many data to displayed
      * @param sortBy type of sort in {@link String}
-     * @param search if user want to filter with value
-     * @return {@link Iterable}
-     * @since 1.0
-     */
-    @Override
-    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search).toString());
-
-        ABaseNamePredicateBuilder builder = new ABaseNamePredicateBuilder(entityQueryDsl);
-
-        Predicate predicate = builder.buildOr();
-        PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-        Iterable<T> collections = repository.findAll(predicate, request);
-
-        if (!collections.iterator().hasNext()) {
-            throw new DataEmptyException(layerName, domainClassName);
-        }
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
-        return collections;
-    }
-
-    /**
-     * Retrieves all entities by some parameter for limiter
-     *
-     * @param page   number of the page
-     * @param size   how many data to displayed
-     * @param sortBy   type of sort in {@link String}
      * @param search if user want to filter with value
      * @param option RECORDED for recorded is true, ALL for all saved data
      * @return {@link Iterable}
      * @since 1.0
      */
     @Override
-    public Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception {
+    public Iterable<T> retrieveAll(Pageable pageable, String search, String option) throws Exception {
         log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search + ", Option: " + option).toString());
 
-        ABaseNamePredicateBuilder builder = new ABaseNamePredicateBuilder(entityQueryDsl);
-        Predicate predicate = builder.buildOr();
-        PageRequest request = PageRequest.of(page - 1, size, Sort.Direction.ASC, sortBy);
-//        Iterable<T> collections = repository.findAll(predicate, request);
         Iterable<T> collections = null;
         if (option.equalsIgnoreCase("RECORDED")) {
-            Optional<Page<T>> temp = repository.findByRecordedTrue(request);
+            Optional<Page<T>> temp = repository.findByRecordedTrue(pageable);
             collections = temp.get();
         } else if (option.equalsIgnoreCase("ALL")) {
-            collections = repository.findAll(predicate, request);
+            collections = repository.findAll(pageable);
         }
 
         if (collections == null) {

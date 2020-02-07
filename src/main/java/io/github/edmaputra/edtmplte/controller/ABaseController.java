@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.security.Principal;
@@ -61,9 +62,7 @@ public abstract class ABaseController<T extends Serializable, ID> {
      * @return {@link ResponseEntity} with data in the body
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                                      @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
-                                      @RequestParam(name = "sortBy", defaultValue = "id", required = false) String sortBy,
+    public ResponseEntity retrieveAll(Pageable pageable,
                                       @RequestParam(name = "search", defaultValue = "", required = false) String search,
                                       @RequestParam(name = "option", defaultValue = "RECORDED", required = false) String option
 //                                      Principal principal

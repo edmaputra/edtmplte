@@ -1,5 +1,6 @@
 package io.github.edmaputra.edtmplte.service;
 
+import java.awt.print.Pageable;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 public interface ABaseService<T extends Serializable, ID> {
 
     /**
-     * Retrieves all entities
+     * Retrieves all entities without an parameters
      *
      * @return
      * @since 1.0
@@ -25,46 +26,21 @@ public interface ABaseService<T extends Serializable, ID> {
     /**
      * Retrieves all entities by some parameter for limiter
      *
-     * @param page number of the page
-     * @param size how many data to displayed
+     * @param pageable the {@link Pageable} interface
+     * @param search   if user want to filter with value
+     * @param option   RECORDED for recorded is true, ALL for all saved data
      * @return {@link Iterable}
      * @since 1.0
      */
-    Iterable<T> retrieveAll(Integer page, Integer size) throws Exception;
+    Iterable<T> retrieveAll(Pageable pageable, String search, String option) throws Exception;
 
     /**
-     * Retrieves all entities by some parameter for limiter
+     * Retrieves an entity by its id.
      *
-     * @param page   number of the page
-     * @param size   how many data to displayed
-     * @param sortBy   type of sort in {@link String}
-     * @param search if user want to filter with value
-     * @return {@link Iterable}
+     * @param id must not be {@literal null}.
+     * @return the entity with the given id or {@literal Optional#empty()} if none found
      * @since 1.0
      */
-    Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search) throws Exception;
-
-    /**
-     * Retrieves all entities by some parameter for limiter
-     *
-     * @param page   number of the page
-     * @param size   how many data to displayed
-     * @param sortBy type of sortBy in {@link String}
-     * @param search if user want to filter with value
-     * @param option RECORDED for recorded is true, ALL for all saved data
-     * @return {@link Iterable}
-     * @since 1.0
-     */
-    Iterable<T> retrieveAll(Integer page, Integer size, String sortBy, String search, String option) throws Exception;
-
-
-        /**
-         * Retrieves an entity by its id.
-         *
-         * @param id must not be {@literal null}.
-         * @return the entity with the given id or {@literal Optional#empty()} if none found
-         * @since 1.0
-         */
     T retrieveOne(ID id) throws Exception;
 
     /**

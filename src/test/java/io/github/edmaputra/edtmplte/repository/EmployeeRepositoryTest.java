@@ -80,7 +80,7 @@ public class EmployeeRepositoryTest {
     @Test
     public void whenRetrieveAll_shouldReturnCorrectQuantity() {
         List<Employee> employees = employeeRepository.findAll();
-
+        System.out.println(employees);
         assertThat(employees.size()).isEqualTo(3);
     }
 
@@ -159,7 +159,8 @@ public class EmployeeRepositoryTest {
 
     @After
     public void clear() {
-        testEntityManager.clear();
+
+//        testEntityManager.clear();
     }
 
 }
