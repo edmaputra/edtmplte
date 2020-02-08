@@ -1,6 +1,7 @@
 package io.github.edmaputra.edtmplte.service;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
+
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -11,26 +12,24 @@ import java.util.Optional;
  * @param <T>  the domain which extends {@link Serializable}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 public interface ABaseService<T extends Serializable, ID> {
 
     /**
      * Retrieves all entities without an parameters
      *
-     * @return
-     * @since 1.0
+     * @return Collection of T
      */
     Iterable<T> retrieveAll() throws Exception;
 
     /**
-     * Retrieves all entities by some parameter for limiter
+     * Retrieves all entities with parameter
      *
      * @param pageable the {@link Pageable} interface
      * @param search   if user want to filter with value
      * @param option   RECORDED for recorded is true, ALL for all saved data
-     * @return {@link Iterable}
-     * @since 1.0
+     * @return Collection of T
      */
     Iterable<T> retrieveAll(Pageable pageable, String search, String option) throws Exception;
 
@@ -39,7 +38,6 @@ public interface ABaseService<T extends Serializable, ID> {
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id or {@literal Optional#empty()} if none found
-     * @since 1.0
      */
     T retrieveOne(ID id) throws Exception;
 
@@ -48,7 +46,6 @@ public interface ABaseService<T extends Serializable, ID> {
      *
      * @param t must not be {@literal null}.
      * @return the saved entity will never be {@literal null}.
-     * @since 1.0
      */
     T add(T t) throws Exception;
 
@@ -58,7 +55,6 @@ public interface ABaseService<T extends Serializable, ID> {
      * @param t  must not be {@literal null}.
      * @param id must not be {@literal null}.
      * @return the saved entity will never be {@literal null}.
-     * @since 1.0
      */
     T update(T t, ID id) throws Exception;
 
@@ -68,7 +64,6 @@ public interface ABaseService<T extends Serializable, ID> {
      *
      * @param id must not be {@literal null}.
      * @return the deleted entity will never be {@literal null}.
-     * @since 1.0
      */
     T delete(ID id) throws Exception;
 

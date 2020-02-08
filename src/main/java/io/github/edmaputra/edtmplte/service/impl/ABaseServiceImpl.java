@@ -24,61 +24,43 @@ import java.util.Optional;
  * @param <T>  the domain which extends {@link ABaseEntity}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService<T, ID> {
 
-    /**
-     * Domain Class Name from Generic Class T
-     */
+    private final ABaseRepository<T, ID> repository;
     private final String domainClassName;
     private final String layerName = this.getClass().getName();
-    private static final Logger log = LoggerFactory.getLogger(ABaseServiceImpl.class);
-    private final String entityQueryDsl;
-
-
-    /**
-     * The Repository
-     */
-    private ABaseRepository<T, ID> repository;
 
     public ABaseServiceImpl(ABaseRepository<T, ID> repository) {
         this.repository = repository;
         this.domainClassName = getGenericName();
-        this.entityQueryDsl = "employee";
     }
 
     /**
      * Retrieve All T Item with no parameters
      *
-     * @return {@link Iterable}
+     * @return collection of T
      */
     @Override
     public Iterable<T> retrieveAll() throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All").toString());
         List list = repository.findAll();
         if (list.isEmpty()) {
             throw new DataEmptyException(layerName, domainClassName);
         }
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return list;
     }
 
     /**
-     * Retrieves all entities by some parameter for limiter
+     * Retrieves all T with parameter
      *
-     * @param page   number of the page
-     * @param size   how many data to displayed
-     * @param sortBy type of sort in {@link String}
+     * @param pageable the Pageable
      * @param search if user want to filter with value
      * @param option RECORDED for recorded is true, ALL for all saved data
-     * @return {@link Iterable}
-     * @since 1.0
+     * @return Collection of T
      */
     @Override
     public Iterable<T> retrieveAll(Pageable pageable, String search, String option) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving All With Page: " + page + ", Size: " + size + ", SortBy: " + sortBy + ", Search: " + search + ", Option: " + option).toString());
-
         Iterable<T> collections = null;
         if (option.equalsIgnoreCase("RECORDED")) {
             Optional<Page<T>> temp = repository.findByRecordedTrue(pageable);
@@ -93,7 +75,6 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
         if (collections.iterator().hasNext()) {
             throw new DataEmptyException(layerName, domainClassName);
         }
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return collections;
     }
 
@@ -102,15 +83,12 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      *
      * @param id must not be {@literal null}.
      * @return the entity with the given id
-     * @since 1.0
      */
     @Override
     public T retrieveOne(ID id) throws Exception {
-        log.info(new LogEntity(domainClassName, "Retrieving One with ID: " + id).toString());
         Optional<T> optional = repository.findById(id);
         if (!optional.isPresent())
             throw new DataNotFoundException("ID - " + id);
-        log.info(new LogEntity(domainClassName, "Returning the Result").toString());
         return optional.get();
     }
 
@@ -119,18 +97,13 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      *
      * @param t must not be {@literal null}.
      * @return the saved entity will never be {@literal null}.
-     * @since 1.0
      */
     @Override
     public T add(T t) throws Exception {
-        log.info(new LogEntity(domainClassName, "Try to Save New Entity with Body: " + t).toString());
         try {
             T tt = repository.save(t);
-            log.info(new LogEntity(domainClassName, "Save Successful").toString());
-            log.info(new LogEntity(domainClassName, "Returning the Result").toString());
             return tt;
         } catch (Exception ex) {
-            log.warn(new LogEntity(domainClassName, "Save with Body: " + t.toString() + ", Failed").toString());
             throw new Exception(this.getClass().getSimpleName() + ": Add Failed");
         }
     }
@@ -141,27 +114,20 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      * @param t  must not be {@literal null}.
      * @param id must not be {@literal null}.
      * @return the saved entity will never be {@literal null}.
-     * @since 1.0
      */
     @Override
     public T update(T t, ID id) throws Exception {
-        log.info(domainClassName + ": Try to Update Entity with Body: " + t.toString() + " by ID: " + id);
         try {
             Optional<T> saved = repository.findById(id);
             if (!saved.isPresent()) {
                 throw new DataNotFoundException("ID - " + id);
             }
-            log.info(new LogEntity(domainClassName, "Get Saved Entity").toString());
             T s = saved.get();
             BeanUtils.copyProperties(t, s, "id");
-            log.info(new LogEntity(domainClassName, "Copy new properties to the saved entity").toString());
             T updated = repository.save(s);
-            log.info(new LogEntity(domainClassName, "Update Successful").toString());
-            log.info(new LogEntity(domainClassName, "Returning the Result").toString());
 
             return updated;
         } catch (Exception ex) {
-            log.warn(new LogEntity(domainClassName, "Update with Body: " + t + " ,By Id: " + id + " Failed.").toString());
             throw new Exception(this.getClass().getSimpleName() + ": Update Failed. " + ex.getMessage());
         }
     }
@@ -172,7 +138,6 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
      *
      * @param id must not be {@literal null}.
      * @return the deleted entity will never be {@literal null}.
-     * @since 1.0
      */
     @Override
     public T delete(ID id) throws Exception {
@@ -181,13 +146,10 @@ public class ABaseServiceImpl<T extends ABaseEntity, ID> implements ABaseService
             if (!t.isPresent())
                 throw new DataNotFoundException("ID - " + id);
             T e = t.get();
-            log.info(new LogEntity(domainClassName, "Get Saved Entity for Deletion with ID: " + id).toString());
             e.setRecorded(false);
-            log.info(new LogEntity(domainClassName, "Set Recorded to False for Entity with ID: " + id).toString());
             T saved = repository.save(e);
             return saved;
         } catch (Exception ex) {
-            log.warn(new LogEntity(layerName, domainClassName, "Delete By ID " + id + " Failed").toString());
             throw new Exception("Delete By ID " + id + " Failed");
         }
     }

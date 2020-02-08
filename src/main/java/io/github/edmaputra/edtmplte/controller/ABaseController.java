@@ -4,16 +4,15 @@ import io.github.edmaputra.edtmplte.domain.ABaseEntity;
 import io.github.edmaputra.edtmplte.service.ABaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.security.Principal;
 
 /**
  * Base Controller for Presentation Layer.
@@ -21,14 +20,11 @@ import java.security.Principal;
  * @param <T>  the domain which extends {@link ABaseEntity}
  * @param <ID> the type of the id of the entity
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 public abstract class ABaseController<T extends Serializable, ID> {
 
-    /**
-     * Service Class
-     */
-    private ABaseService<T, ID> service;
+    private final ABaseService<T, ID> service;
 
     private static final Logger log = LoggerFactory.getLogger(ABaseController.class);
 
@@ -36,29 +32,12 @@ public abstract class ABaseController<T extends Serializable, ID> {
         this.service = service;
     }
 
-//    /**
-//     * Retrieve All Entity, produces JSON
-//     *
-//     * @param page number of the page
-//     * @param size amount of the data
-//     * @return {@link ResponseEntity} with data in the body
-//     */
-//    @GetMapping(value = "/p", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity retrieveAll(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-//                                      @RequestParam(name = "size", defaultValue = "10", required = false) Integer size
-////                                      Principal principal
-//    ) throws Exception {
-//        Iterable<T> data = service.retrieveAll(page, size);
-//        return ResponseEntity.ok(data);
-//    }
-
     /**
      * Retrieve All Entity, produces JSON
      *
-     * @param page number of the page
-     * @param size amount of the data
-     * @param sortBy Sort data based on
+     * @param pageable Pageable
      * @param search search keyword
+     * @param option option to show all or recorded only
      * @return {@link ResponseEntity} with data in the body
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,7 +46,7 @@ public abstract class ABaseController<T extends Serializable, ID> {
                                       @RequestParam(name = "option", defaultValue = "RECORDED", required = false) String option
 //                                      Principal principal
     ) throws Exception {
-        Iterable<T> data = service.retrieveAll(page, size, sortBy, search);
+        Iterable<T> data = service.retrieveAll(pageable, search, option);
         return ResponseEntity.ok(data);
     }
 

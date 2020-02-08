@@ -11,7 +11,7 @@ import java.time.Instant;
  * Have an ID field for Record's Identifier
  *
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 @MappedSuperclass
 public abstract class ABaseIdEntity<T> extends ABaseEntity {

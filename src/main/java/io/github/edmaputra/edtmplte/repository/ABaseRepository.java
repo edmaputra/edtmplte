@@ -12,7 +12,7 @@ import java.util.Optional;
  * Base Repository interface that use {@link NoRepositoryBean} annotation to prevent generate it as a bean.
  *
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 @NoRepositoryBean
 public interface ABaseRepository<T extends ABaseEntity, ID> extends JpaRepository<T, ID> {

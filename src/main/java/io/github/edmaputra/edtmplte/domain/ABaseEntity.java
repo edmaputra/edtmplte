@@ -16,7 +16,7 @@ import java.time.Instant;
  * it's implements {@link Serializable}
  *
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 @MappedSuperclass
 @Audited

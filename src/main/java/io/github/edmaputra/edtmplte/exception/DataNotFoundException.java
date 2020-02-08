@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Data Not Found Exception, with {@link HttpStatus} NOT_FOUND response
  *
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class DataNotFoundException extends Exception {
@@ -24,7 +24,7 @@ public class DataNotFoundException extends Exception {
     /**
      * Default Constructor
      *
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataNotFoundException() {
     }
@@ -33,7 +33,7 @@ public class DataNotFoundException extends Exception {
      * Exception Constructor with Entity Object
      *
      * @param message
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataNotFoundException(String message) {
         super(DEFAULT_MESSAGE);
@@ -45,7 +45,7 @@ public class DataNotFoundException extends Exception {
      *
      * @param layer
      * @param entity
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataNotFoundException(String layer, String entity) {
         super(DEFAULT_MESSAGE);

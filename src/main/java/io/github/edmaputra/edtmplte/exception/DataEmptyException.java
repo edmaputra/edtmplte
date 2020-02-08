@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Data Empty Exception, with {@link HttpStatus} NOT_FOUND response
  *
  * @author edmaputra
- * @since 1.0
+ * @since 0.0.1
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class DataEmptyException extends Exception {
@@ -24,7 +24,7 @@ public class DataEmptyException extends Exception {
     /**
      * Default Constructor
      *
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataEmptyException() {
         super();
@@ -34,7 +34,7 @@ public class DataEmptyException extends Exception {
      * Exception Constructor with Entity Object
      *
      * @param message
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataEmptyException(String message) {
         super(DEFAULT_MESSAGE);
@@ -47,7 +47,7 @@ public class DataEmptyException extends Exception {
      *
      * @param layer
      * @param entity
-     * @since 1.0
+     * @since 0.0.1
      */
     public DataEmptyException(String layer, String entity) {
         super(DEFAULT_MESSAGE);
